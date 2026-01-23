@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Skills koleksiyonu - herkes okuyabilir ve yazabilir (geliştirme için)
+    match /skills/{document=**} {
+      allow read, write: if true;
+    }
+    
+    // Test koleksiyonu
+    match /test/{document=**} {
+      allow read, write: if true;
+    }
+    
+    // Diğer koleksiyonlar için varsayılan kural
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

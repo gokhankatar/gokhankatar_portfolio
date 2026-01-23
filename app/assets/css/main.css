@@ -1,0 +1,357 @@
+/* Global Styles */
+:root {
+  --primary-color: #D34A4C;
+  --secondary-color: #667eea;
+  --text-color: #333;
+  --text-light: #666;
+  --bg-light: #f8f9fa;
+  --border-color: #e9ecef;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Smooth scroll offset for fixed header */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.profile-placeholder {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Vuetify overrides */
+.v-btn {
+  text-transform: none !important;
+}
+
+
+@media screen and (min-width: 1600px) {
+  .init-container {
+    padding: 1rem 20rem !important;
+  }
+}
+
+@media screen and (min-width: 1264px) and (max-width: 1600px) {
+  .init-container {
+    padding: 1rem 15rem !important;
+  }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1264px) {
+  .init-container {
+    padding: 1rem 5rem !important;
+  }
+}
+
+@media screen and (min-width: 500px) and(max-width: 900px) {
+  .init-container {
+    padding: 1rem 2rem !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .init-container {
+    padding: 1rem 0.5rem !important;
+  }
+}
+
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: transparent;
+}
+
+.hero-row {
+  z-index: 1;
+}
+
+.hero-container {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  max-width: 920px;
+}
+
+.hero-btn {
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+
+.hero-btn-primary {
+  background: linear-gradient(135deg, #ff6a6a 0%, #d34a4c 60%, #b83a3c 100%);
+  color: white;
+  box-shadow: 0 10px 22px rgba(211, 74, 76, 0.35);
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(211, 74, 76, 0.45);
+}
+
+.hero-btn-secondary {
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.hero-btn-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.profile-placeholder {
+  animation: float 3s ease-in-out infinite;
+}
+
+.profile-avatar {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Skills Card Animations */
+.skill-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.skills-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.skills-chips {
+  justify-content: flex-end;
+}
+
+.skill-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(211, 74, 76, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.skill-card:hover::before {
+  left: 100%;
+}
+
+.skill-card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.skill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 10px;
+  min-width: 46px;
+  min-height: 46px;
+  position: relative;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.skill-logo,
+.skill-name-icon {
+  background: transparent;
+  border-radius: 8px;
+  box-shadow: none;
+  padding: 0;
+}
+
+.skill-card:hover .skill-icon {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
+}
+
+.skill-label {
+  position: relative;
+  font-size: 11px;
+  line-height: 1.1;
+  opacity: 0.75;
+  text-align: center;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.skill-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+  border-radius: 999px;
+}
+
+.skill-card:hover .skill-label {
+  opacity: 1;
+}
+
+.skill-card:hover .skill-label::after {
+  transform: scaleX(1);
+}
+
+.skill-card:hover .skill-label.skill-icon--front_end {
+  color: rgb(33, 150, 243);
+}
+
+.skill-card:hover .skill-label.skill-icon--front_end::after {
+  background: rgba(33, 150, 243, 0.85);
+}
+
+.skill-card:hover .skill-label.skill-icon--back_end {
+  color: rgb(76, 175, 80);
+}
+
+.skill-card:hover .skill-label.skill-icon--back_end::after {
+  background: rgba(76, 175, 80, 0.85);
+}
+
+.skill-card:hover .skill-label.skill-icon--library {
+  color: rgb(156, 39, 176);
+}
+
+.skill-card:hover .skill-label.skill-icon--library::after {
+  background: rgba(156, 39, 176, 0.85);
+}
+
+.skill-card:hover .skill-label.skill-icon--tools {
+  color: rgb(255, 152, 0);
+}
+
+.skill-card:hover .skill-label.skill-icon--tools::after {
+  background: rgba(255, 152, 0, 0.9);
+}
+
+.skill-logo {
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.skill-card:hover .skill-logo {
+  transform: scale(1.05);
+}
+
+.skill-name-icon {
+  width: 36px;
+  height: 36px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+/* Stagger animation for cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skill-card {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.skill-card-0 {
+  animation-delay: 0s;
+}
+.skill-card-1 {
+  animation-delay: 0.05s;
+}
+.skill-card-2 {
+  animation-delay: 0.1s;
+}
+.skill-card-3 {
+  animation-delay: 0.15s;
+}
+.skill-card-4 {
+  animation-delay: 0.2s;
+}
+.skill-card-5 {
+  animation-delay: 0.25s;
+}
+.skill-card-6 {
+  animation-delay: 0.3s;
+}
+.skill-card-7 {
+  animation-delay: 0.35s;
+}
+.skill-card-8 {
+  animation-delay: 0.4s;
+}
+.skill-card-9 {
+  animation-delay: 0.45s;
+}
+.skill-card-10 {
+  animation-delay: 0.5s;
+}
+.skill-card-11 {
+  animation-delay: 0.55s;
+}
