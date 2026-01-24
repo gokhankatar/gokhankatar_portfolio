@@ -35,9 +35,10 @@
                   variant="text"
                   size="small"
                   class="quick-link-btn"
-                  :prepend-icon="link.icon"
+                  :ripple="false"
                 >
-                  {{ link.label }}
+                  <v-icon :icon="link.icon" size="14"></v-icon>
+                  <span class="quick-link-text">{{ link.label }}</span>
                 </v-btn>
               </div>
             </v-col>
@@ -47,47 +48,46 @@
                 <v-btn
                   href="https://www.youtube.com/@npmrungame"
                   target="_blank"
-                  icon
+                  icon="mdi-youtube"
                   variant="text"
                   color="grey-lighten-1"
                   size="small"
                   class="connect-btn"
                   aria-label="YouTube"
-                >
-                  <v-icon>mdi-youtube</v-icon>
-                </v-btn>
+                  :ripple="false"
+                />
                 <v-btn
                   href="https://github.com/gokhankatar"
                   target="_blank"
-                  icon
+                  icon="mdi-github"
                   variant="text"
                   color="grey-lighten-1"
                   size="small"
                   class="connect-btn"
-                >
-                  <v-icon>mdi-github</v-icon>
-                </v-btn>
+                  :ripple="false"
+                  aria-label="GitHub"
+                />
                 <v-btn
                   href="https://linkedin.com/in/gokhankatar"
                   target="_blank"
-                  icon
+                  icon="mdi-linkedin"
                   variant="text"
                   color="grey-lighten-1"
                   size="small"
                   class="connect-btn"
-                >
-                  <v-icon>mdi-linkedin</v-icon>
-                </v-btn>
+                  :ripple="false"
+                  aria-label="LinkedIn"
+                />
                 <v-btn
                   href="mailto:katar_gokhan@hotmail.com"
-                  icon
+                  icon="mdi-email"
                   variant="text"
                   color="grey-lighten-1"
                   size="small"
                   class="connect-btn"
-                >
-                  <v-icon>mdi-email</v-icon>
-                </v-btn>
+                  :ripple="false"
+                  aria-label="Email"
+                />
               </div>
             </v-col>
           </v-row>
@@ -153,6 +153,12 @@ const footerLinks = [
   text-transform: none;
   letter-spacing: 0;
   transition: color 0.2s ease, transform 0.2s ease;
+  gap: 6px;
+}
+
+.quick-link-text {
+  font-size: 12px;
+  line-height: 1.2;
 }
 
 .quick-link-btn:hover {

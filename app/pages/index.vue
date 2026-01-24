@@ -1,7 +1,5 @@
 <template>
-  <div class="init-container">
-    <AppHeader />
-
+  <div>
     <!-- Hero Section -->
     <v-sheet
       id="home"
@@ -12,7 +10,7 @@
       <v-container class="hero-container">
         <div class="hero-content">
           <div class="profile-placeholder">
-            <v-avatar size="220" class="profile-avatar">
+            <v-avatar :size="display.lgAndUp.value ? 220 : 140" class="profile-avatar">
               <v-img src="/img/profile.png" alt="Gokhan Katar" cover></v-img>
             </v-avatar>
           </div>
@@ -22,8 +20,7 @@
           <AnimatedTitle
             text="Gokhan Katar"
             variant="glow"
-            class="text-h5 text-md-h4 text-lg-h3 text-xl-h2 text-md-h1 font-weight-bold mb-4"
-            style="color: #ffd700"
+            class="hero-name text-h5 text-md-h4 text-lg-h3 text-xl-h2 text-md-h1 font-weight-bold mb-4"
           />
           <div
             class="text-subbtitle-2 text-sm-subtitle-1 text-lg-h4 text-xl-h3 font-weight-bold mb-4"
@@ -47,54 +44,74 @@
               size="large"
               variant="flat"
               class="hero-btn hero-btn-primary"
-            >
-              View My Projects
-            </v-btn>
+              text="View My Projects"
+            />
+
             <v-btn
               href="#contact"
               size="large"
               variant="outlined"
               class="hero-btn hero-btn-secondary"
-            >
-              Get In Touch
-            </v-btn>
+              text="Get In Touch"
+            />
           </div>
         </div>
       </v-container>
     </v-sheet>
 
     <!-- About Section -->
-    <v-sheet id="about" class="bg-transparent py-16">
+    <v-sheet id="about" class="bg-transparent">
       <v-container>
-        <AnimatedTitle
-          text="About Me"
-          variant="fadeUp"
-          class="text-h3 text-md-h2 text-center font-weight-bold mb-8"
-        />
+        <p
+          class="text-h5 text-sm-h4 text-lg-h3 text-xl-h2 font-weight-bold text-center my-5"
+        >
+          About Me
+        </p>
         <v-row justify="center">
           <v-col cols="12" md="8">
-            <div class="text-h6 mb-4">
+            <p
+              class="text-center text-caption text-sm-subtitle-2 text-lg-subtitle-1 text-xl-h6 mb-4"
+            >
               Hello! I'm Gokhan Katar, a passionate web developer. I develop user-focused,
               high-performance, and scalable web applications using modern web
               technologies.
-            </div>
-            <div class="text-h6 mb-8">
+            </p>
+            <p
+              class="text-center text-caption text-sm-subtitle-2 text-lg-subtitle-1 text-xl-h6 mb-4"
+            >
               Experienced in both frontend and backend technologies, I'm always open to
               learning and exploring new technologies. I strive to write clean and
               maintainable code by applying best practices in every project.
-            </div>
-            <v-row class="mt-8">
-              <v-col cols="12" sm="4" class="text-center">
-                <div class="text-h2 font-weight-bold" style="color: #d34a4c">50+</div>
-                <div class="text-subtitle-1">Projects</div>
-              </v-col>
-              <v-col cols="12" sm="4" class="text-center">
-                <div class="text-h2 font-weight-bold" style="color: #d34a4c">5+</div>
-                <div class="text-subtitle-1">Years Experience</div>
-              </v-col>
-              <v-col cols="12" sm="4" class="text-center">
-                <div class="text-h2 font-weight-bold" style="color: #d34a4c">30+</div>
-                <div class="text-subtitle-1">Clients</div>
+            </p>
+
+            <v-row class="mt-8" dense>
+              <v-col
+                v-for="item in aboutHighlights"
+                :key="item.title"
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-card
+                  class="about-feature-card d-flex flex-column align-start"
+                  elevation="2"
+                  variant="tonal"
+                >
+                  <div class="about-feature-icon" :class="item.tone">
+                    <v-icon :icon="item.icon" :size="display.smAndDown.value ? 16 : 20" />
+                  </div>
+
+                  <p
+                    class="text-subtitle-2 text-lg-subtitle-1 font-weight-bold mb-0 mt-2"
+                    style="letter-spacing: 1px !"
+                  >
+                    {{ item.title }}
+                  </p>
+
+                  <p class="text-caption text-lg-subtitle-2 mb-0">
+                    {{ item.description }}
+                  </p>
+                </v-card>
               </v-col>
             </v-row>
           </v-col>
@@ -102,26 +119,37 @@
       </v-container>
     </v-sheet>
 
+    <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
+
     <!-- Skills Section -->
-    <v-sheet id="skills" class="py-16 bg-transparent">
+    <v-sheet id="skills" class="bg-transparent">
       <v-container>
-        <div class="skills-header">
-          <AnimatedTitle
-            text="Skills"
-            variant="wave"
-            class="text-h3 text-md-h2 text-center font-weight-bold"
-          />
+        <p
+          class="text-h5 text-sm-h4 text-lg-h3 text-xl-h2 font-weight-bold text-center my-5"
+        >
+          Skills
+        </p>
+
+        <div class="d-flex flex-wrap justify-center justify-sm-end ga-2 w-100 mb-3">
           <v-chip-group
             v-model="selectedCategory"
-            class="skills-chips"
+            class="skills-chips d-flex flex-wrap"
             filter
             selected-class="text-primary"
           >
-            <v-chip value="all" variant="tonal">All</v-chip>
-            <v-chip value="front_end" variant="tonal" color="blue">Front End</v-chip>
-            <v-chip value="back_end" variant="tonal" color="green">Back End</v-chip>
-            <v-chip value="library" variant="tonal" color="purple">Library</v-chip>
-            <v-chip value="tools" variant="tonal" color="orange">Tools</v-chip>
+            <v-chip value="all" variant="tonal" class="skills-chip"> All </v-chip>
+            <v-chip value="front_end" variant="tonal" color="blue" class="skills-chip">
+              Front End
+            </v-chip>
+            <v-chip value="back_end" variant="tonal" color="green" class="skills-chip">
+              Back End
+            </v-chip>
+            <v-chip value="library" variant="tonal" color="purple" class="skills-chip">
+              Library
+            </v-chip>
+            <v-chip value="tools" variant="tonal" color="orange" class="skills-chip">
+              Tools
+            </v-chip>
           </v-chip-group>
         </div>
 
@@ -151,11 +179,7 @@
               >
                 <v-tooltip location="top">
                   <template #activator="{ props }">
-                    <div
-                      v-bind="props"
-                      :class="['skill-card', `skill-card-${index}`]"
-                      @mouseenter="onSkillHover(index)"
-                    >
+                    <div v-bind="props" :class="['skill-card', `skill-card-${index}`]">
                       <div class="skill-icon" :class="getSkillCategoryClass(skill.field)">
                         <img
                           v-if="skill.skill_logo"
@@ -201,14 +225,16 @@
       </v-container>
     </v-sheet>
 
+    <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
+
     <!-- Projects Section -->
-    <v-sheet id="projects" class="py-16 bg-transparent">
+    <v-sheet id="projects" class="bg-transparent">
       <v-container>
-        <AnimatedTitle
-          text="My Projects"
-          variant="fadeUp"
-          class="text-h3 text-md-h2 text-center font-weight-bold mb-8"
-        />
+        <p
+          class="text-h5 text-sm-h4 text-lg-h3 text-xl-h2 font-weight-bold text-center my-5"
+        >
+          My Projects
+        </p>
         <v-row>
           <v-col v-for="project in projects" :key="project.id" cols="12" md="6" lg="4">
             <v-card elevation="4" class="h-100" hover>
@@ -268,8 +294,10 @@
       </v-container>
     </v-sheet>
 
+    <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
+
     <!-- Contact Section -->
-    <v-sheet id="contact" class="py-16 bg-transparent">
+    <v-sheet id="contact" class="bg-transparent">
       <v-container>
         <AnimatedTitle
           text="Contact"
@@ -362,14 +390,13 @@
       </v-container>
     </v-sheet>
 
-    <AppFooter />
+    <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useTheme } from "vuetify";
-import { useSkills } from "~/composables/useSkills";
 
 const display = useDisplay();
 
@@ -382,7 +409,19 @@ const form = ref({
 const theme = useTheme();
 const selectedCategory = ref("all");
 
-const { skills, loading: skillsLoading, error: skillsError } = useSkills();
+interface Skill {
+  id?: string;
+  skill_name: string;
+  field: string[];
+  skill_logo: string;
+  order: number;
+}
+
+const { data: skills, pending: skillsLoading, error: skillsError } = await useFetch<
+  Skill[]
+>("/api/skills", {
+  default: () => [],
+});
 
 const filteredSkills = computed(() => {
   if (selectedCategory.value === "all") {
@@ -392,20 +431,6 @@ const filteredSkills = computed(() => {
     (skill.field || []).includes(selectedCategory.value)
   );
 });
-
-const onSkillHover = (index: number) => {
-  // Animation will be handled by CSS
-};
-
-const fieldColor = (field?: string) => {
-  const map: Record<string, string> = {
-    front_end: "blue",
-    back_end: "green",
-    library: "purple",
-    tools: "orange",
-  };
-  return field ? map[field] || "grey" : "grey";
-};
 
 const formatField = (field?: string) => {
   return field ? field.replace(/_/g, " ") : "";
@@ -427,6 +452,49 @@ const getSkillCategoryClass = (fields?: string[]) => {
   const field = fields?.[0] || "tools";
   return `skill-icon--${field}`;
 };
+
+const aboutHighlights = [
+  {
+    title: "Clean Code Projects",
+    description:
+      "Readable, maintainable codebases built with modern best practices and solid architecture.",
+    icon: "mdi-code-braces",
+    tone: "tone-red",
+  },
+  {
+    title: "Modern Tech Stack",
+    description:
+      "Nuxt, Vue, TypeScript, and cloud-first tooling to keep your product future-ready.",
+    icon: "mdi-rocket-launch",
+    tone: "tone-blue",
+  },
+  {
+    title: "Secure and Fast",
+    description: "Performance-first delivery with security-minded patterns from day one.",
+    icon: "mdi-shield-check",
+    tone: "tone-green",
+  },
+  {
+    title: "Custom Software Services",
+    description:
+      "Tailored solutions aligned with your goals, workflows, and unique business needs.",
+    icon: "mdi-account-cog",
+    tone: "tone-purple",
+  },
+  {
+    title: "Scalable Architecture",
+    description:
+      "Built to grow with traffic, features, and teams without costly rewrites.",
+    icon: "mdi-chart-line",
+    tone: "tone-orange",
+  },
+  {
+    title: "Reliable Partnership",
+    description: "Clear communication, thoughtful planning, and dependable delivery.",
+    icon: "mdi-handshake",
+    tone: "tone-teal",
+  },
+];
 
 const projects = ref([
   {
