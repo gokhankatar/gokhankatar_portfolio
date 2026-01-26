@@ -280,7 +280,12 @@
         >
           My Projects
         </p>
-        <v-row v-if="projectsLoading" justify="center" align="center" :dense="display.smAndDown.value">
+        <v-row
+          v-if="projectsLoading"
+          justify="center"
+          align="center"
+          :dense="display.smAndDown.value"
+        >
           <v-col
             v-for="n in 4"
             :key="`project-skeleton-${n}`"
@@ -289,10 +294,7 @@
             lg="4"
             xl="3"
           >
-            <v-skeleton-loader
-              type="card"
-              class="project-card h-auto"
-            />
+            <v-skeleton-loader type="card" class="project-card h-auto" />
           </v-col>
         </v-row>
 
@@ -392,79 +394,74 @@
           Contact Me
         </p>
         <v-row>
-          <v-col cols="12" md="5">
-            <p class="text-subtitle-1 mb-6">
+          <v-col cols="12" lg="6" xl="4">
+            <p
+              class="text-center text-caption text-lg-subtitle-2 text-xl-subtitle-1 mb-6"
+              style="letter-spacing: 1px !important"
+            >
               If you'd like to work on a project together or just say hello, feel free to
               reach out!
             </p>
-            <div class="d-flex flex-column ga-4">
-              <v-btn
-                href="mailto:katar_gokhan@hotmail.com"
-                variant="text"
-                prepend-icon="mdi-email"
-                class="justify-start"
-                :ripple="false"
-              >
-                katar_gokhan@hotmail.com
-              </v-btn>
-              <v-btn
-                href="https://www.youtube.com/@npmrungame"
-                target="_blank"
-                variant="text"
-                prepend-icon="mdi-youtube"
-                class="justify-start"
-                :ripple="false"
-              >
-                npmrungame
-              </v-btn>
-              <v-btn
-                href="https://linkedin.com/in/gokhankatar"
-                target="_blank"
-                variant="text"
-                prepend-icon="mdi-linkedin"
-                class="justify-start"
-                :ripple="false"
-              >
-                LinkedIn
-              </v-btn>
-              <v-btn
-                href="https://github.com/gokhankatar"
-                target="_blank"
-                variant="text"
-                prepend-icon="mdi-github"
-                class="justify-start"
-                :ripple="false"
-              >
-                GitHub
-              </v-btn>
-            </div>
+
+            <v-row class="contact-links" dense>
+              <v-col v-for="item in contactCards" :key="item.label" cols="12" sm="6">
+                <v-card
+                  class="contact-card"
+                  variant="tonal"
+                  :ripple="false"
+                  :href="item.href"
+                  :target="item.target"
+                >
+                  <v-icon :icon="item.icon" size="22" />
+                  <div>
+                    <p class="contact-card-title">{{ item.label }}</p>
+                    <p class="contact-card-value text-caption text-xl-subtitle-2">
+                      {{ item.value }}
+                    </p>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
           </v-col>
-          <v-col cols="12" md="7">
+
+          <v-col cols="12" lg="6" xl="8">
             <div class="contact-form">
               <v-form @submit.prevent="handleSubmit">
                 <v-text-field
                   v-model="form.name"
                   label="Your Name"
                   required
+                  prepend-inner-icon="mdi-account"
                   variant="outlined"
-                  class="mb-4"
-                ></v-text-field>
+                  hide-details="auto"
+                  :density="display.xl.value ? 'default' : 'compact'"
+                />
                 <v-text-field
                   v-model="form.email"
                   label="Email"
                   type="email"
+                  prepend-inner-icon="mdi-email"
                   required
+                  class="my-2 my-xl-4"
                   variant="outlined"
-                  class="mb-4"
-                ></v-text-field>
+                  hide-details="auto"
+                  :density="display.xl.value ? 'default' : 'compact'"
+                />
                 <v-textarea
                   v-model="form.message"
                   label="Your Message"
                   required
                   variant="outlined"
                   rows="5"
-                  class="mb-4"
-                ></v-textarea>
+                  prepend-inner-icon="mdi-message"
+                  hide-details="auto"
+                  counter
+                  max-length="300"
+                  placeholder="I want to build a website for my business"
+                  no-resize
+                  :density="display.xl.value ? 'default' : 'compact'"
+                />
+
                 <v-btn
                   type="submit"
                   color="error"
@@ -472,9 +469,9 @@
                   variant="flat"
                   class="text-none"
                   :ripple="false"
-                >
-                  Send
-                </v-btn>
+                  text="Send"
+                  prepend-icon="mdi-check"
+                />
               </v-form>
             </div>
           </v-col>
@@ -482,7 +479,7 @@
       </v-container>
     </v-sheet>
 
-    <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
+    <v-responsive :height="display.lgAndUp.value ? 150 : 100" />
   </div>
 </template>
 
@@ -513,8 +510,9 @@ const { data: skills, pending: skillsLoading, error: skillsError } = await useFe
   default: () => [],
 });
 
-const { data: projects, pending: projectsLoading, error: projectsError } =
-  await useFetch<Project[]>("/api/projects", {
+const { data: projects, pending: projectsLoading, error: projectsError } = await useFetch<
+  Project[]
+>("/api/projects", {
   default: () => [],
 });
 
@@ -614,6 +612,36 @@ const aboutHighlights = [
     description: "Clear communication, thoughtful planning, and dependable delivery.",
     icon: "mdi-handshake",
     tone: "tone-teal",
+  },
+];
+
+const contactCards = [
+  {
+    label: "Email",
+    value: "katar_gokhan@hotmail.com",
+    icon: "mdi-email",
+    href: "mailto:katar_gokhan@hotmail.com",
+  },
+  {
+    label: "YouTube",
+    value: "npmrungame",
+    icon: "mdi-youtube",
+    href: "https://www.youtube.com/@npmrungame",
+    target: "_blank",
+  },
+  {
+    label: "LinkedIn",
+    value: "gokhankatar",
+    icon: "mdi-linkedin",
+    href: "https://linkedin.com/in/gokhankatar",
+    target: "_blank",
+  },
+  {
+    label: "GitHub",
+    value: "gokhankatar",
+    icon: "mdi-github",
+    href: "https://github.com/gokhankatar",
+    target: "_blank",
   },
 ];
 

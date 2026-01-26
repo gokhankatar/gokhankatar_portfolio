@@ -335,6 +335,47 @@ section[id] {
   flex-direction: column;
 }
 
+.contact-links {
+  margin-top: 12px;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.contact-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.contact-card-title {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.contact-card-value {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.v-theme--light .contact-card-title {
+  color: rgba(31, 41, 55, 0.6);
+}
+
+.v-theme--light .contact-card-value {
+  color: rgba(31, 41, 55, 0.85);
+}
+
 .about-intro {
   display: grid;
   gap: 16px;
