@@ -302,7 +302,7 @@
           <v-alert type="error" variant="tonal">Failed to load projects.</v-alert>
         </div>
 
-        <v-row v-else justify="center" align="center" :dense="display.smAndDown.value">
+        <v-row v-else justify="center" align="stretch" :dense="display.smAndDown.value">
           <v-col
             v-for="project in projects"
             :key="project.id"
@@ -311,9 +311,15 @@
             lg="4"
             xl="3"
           >
-            <v-card elevation="4" class="project-card h-auto" hover>
+            <v-card
+              elevation="4"
+              class="project-card h-100"
+              hover
+              :ripple="false"
+              :min-height="display.smAndDown.value ? 440 : undefined"
+            >
               <v-img
-                height="60%"
+                height="220"
                 :src="project.preview_img || ''"
                 cover
                 class="project-image bg-grey-lighten-3"
@@ -324,6 +330,27 @@
                   </div>
                 </template>
               </v-img>
+
+              <div class="project-card__overlay">
+                <v-btn
+                  :to="`/projects/${getProjectSlug(project)}`"
+                  variant="flat"
+                  class="project-card__btn"
+                  :ripple="false"
+                  text="View Detail"
+                  prepend-icon="mdi-eye-outline"
+                />
+                <v-btn
+                  v-if="project.project_link"
+                  :href="project.project_link"
+                  target="_blank"
+                  variant="outlined"
+                  class="project-card__btn"
+                  :ripple="false"
+                  text="View Project"
+                  append-icon="mdi-open-in-new"
+                />
+              </div>
 
               <v-card-title
                 class="text-caption text-lg-subtitle-2 text-xl-h6 font-weight-bold"
@@ -359,20 +386,6 @@
                     class="project-tech-more"
                     text="More"
                     :ripple="false"
-                  />
-                </div>
-                <div class="d-flex ga-2">
-                  <v-btn
-                    v-if="project.project_link"
-                    :href="project.project_link"
-                    target="_blank"
-                    color="error"
-                    variant="text"
-                    :size="display.xl.value ? 'small' : 'x-small'"
-                    :ripple="false"
-                    append-icon="mdi-open-in-new"
-                    class="project-link-btn"
-                    text="View Project"
                   />
                 </div>
               </v-card-text>

@@ -1,4 +1,6 @@
 /* Global Styles */
+@import "./footer.css";
+
 :root {
   --primary-color: #D34A4C;
   --secondary-color: #667eea;
@@ -457,18 +459,9 @@ section[id] {
 .contact-card-value {
   margin: 4px 0 0;
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.9);
   white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
-}
-
-.v-theme--light .contact-card-title {
-  color: rgba(31, 41, 55, 0.6);
-}
-
-.v-theme--light .contact-card-value {
-  color: rgba(31, 41, 55, 0.85);
 }
 
 .contact-form-card {
@@ -700,6 +693,10 @@ section[id] {
   background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .v-theme--dark .project-card {
@@ -710,6 +707,139 @@ section[id] {
 .project-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
+}
+
+.project-card__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  background: rgba(10, 12, 16, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.project-card:hover .project-card__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.project-card__btn {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: projectOverlayPop 0.35s ease;
+}
+
+.v-theme--light .project-card__overlay {
+  background: rgba(248, 250, 252, 0.75);
+}
+
+@media (max-width: 960px) {
+  .project-card__overlay {
+    opacity: 1;
+    pointer-events: auto;
+    position: static;
+    margin-top: 12px;
+    background: transparent;
+    backdrop-filter: none;
+    padding: 0 16px 16px;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .project-card:hover .project-tech-preview,
+  .project-card:hover .project-card-title,
+  .project-card:hover .v-card-title,
+  .project-card:hover .v-card-text {
+    opacity: 1;
+  }
+
+  .project-card .v-card-text,
+  .project-card .v-card-title {
+    opacity: 1;
+  }
+
+  .project-card__btn {
+    width: 100%;
+    min-height: 36px;
+    font-size: 0.85rem;
+  }
+
+  .project-card:hover .project-tech-preview,
+  .project-card:hover .project-card-title,
+  .project-card:hover .v-card-title,
+  .project-card:hover .v-card-text {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .project-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .project-card:hover .project-card__overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .project-card:hover .project-tech-preview,
+  .project-card:hover .project-card-title,
+  .project-card:hover .v-card-title,
+  .project-card:hover .v-card-text {
+    opacity: 1;
+  }
+}
+
+.project-card:hover .project-tech-preview,
+.project-card:hover .project-card-title,
+.project-card:hover .v-card-title,
+.project-card:hover .v-card-text {
+  opacity: 0;
+}
+
+@media (max-width: 960px) {
+  .project-card .project-tech-preview,
+  .project-card .project-card-title,
+  .project-card .v-card-title,
+  .project-card .v-card-text,
+  .project-card:hover .project-tech-preview,
+  .project-card:hover .project-card-title,
+  .project-card:hover .v-card-title,
+  .project-card:hover .v-card-text {
+    opacity: 1 !important;
+  }
+}
+
+.project-card .v-card-text,
+.project-card .v-card-title {
+  transition: opacity 0.2s ease;
+}
+
+@keyframes projectOverlayPop {
+  from {
+    transform: translateY(6px) scale(0.98);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.project-card .v-card-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .project-tech-preview {
