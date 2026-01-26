@@ -14,14 +14,6 @@ export default defineNuxtPlugin(() => {
     appId: config.public.firebaseAppId,
   };
 
-  console.log('🔥 Firebase Plugin: Initializing...');
-  console.log('🔥 Config:', {
-    apiKey: config.public.firebaseApiKey ? '✅' : '❌',
-    projectId: config.public.firebaseProjectId ? '✅' : '❌',
-    authDomain: config.public.firebaseAuthDomain || 'N/A',
-  });
-  console.log('🔥 ProjectId değeri:', config.public.firebaseProjectId || 'UNDEFINED');
-
   // ProjectId kontrolü
   if (!config.public.firebaseProjectId) {
     console.error('❌ FIREBASE_PROJECT_ID eksik! .env dosyasını kontrol edin.');
@@ -39,9 +31,6 @@ export default defineNuxtPlugin(() => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const firestore = getFirestore(app);
-
-    console.log('✅ Firebase Plugin: Initialized successfully');
-    console.log('✅ Firestore instance:', firestore);
 
     return {
       provide: {

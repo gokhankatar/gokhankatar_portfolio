@@ -1,0 +1,96 @@
+/* Loading overlay styles */
+.app-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.app-loading.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.app-loading__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(248, 249, 252, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.v-theme--dark .app-loading__backdrop {
+  background: rgba(12, 14, 18, 0.75);
+}
+
+.app-loading__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 22px;
+  border-radius: 16px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.app-loading__spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 3px solid rgba(240, 106, 108, 0.25);
+  border-top-color: rgba(240, 106, 108, 0.95);
+  animation: loadingSpin 0.9s linear infinite;
+}
+
+.v-theme--dark .app-loading__spinner {
+  border: 3px solid rgba(143, 168, 255, 0.2);
+  border-top-color: rgba(143, 168, 255, 0.9);
+}
+
+.app-loading__title {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 1rem;
+  background: linear-gradient(120deg, #f06a6c, #8fa8ff, #f06a6c);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: loadingShine 2.4s linear infinite;
+}
+
+.app-loading__subtitle {
+  margin: 0;
+  color: #9ca3af;
+}
+
+.v-theme--light .app-loading__subtitle {
+  color: #9ca3af;
+}
+
+.v-theme--dark .app-loading__content {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes loadingShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

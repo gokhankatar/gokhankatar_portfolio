@@ -331,12 +331,13 @@
                 </template>
               </v-img>
 
-              <div class="project-card__overlay">
+              <div class="project-card__overlay d-flex flex-column flex-xl-row">
                 <v-btn
                   :to="`/projects/${getProjectSlug(project)}`"
                   variant="flat"
                   class="project-card__btn"
                   :ripple="false"
+                  :size="display.xl.value ? 'large' : 'default'"
                   text="View Detail"
                   prepend-icon="mdi-eye-outline"
                 />
@@ -345,6 +346,7 @@
                   :href="project.project_link"
                   target="_blank"
                   variant="outlined"
+                  :size="display.xl.value ? 'large' : 'default'"
                   class="project-card__btn"
                   :ripple="false"
                   text="View Project"
