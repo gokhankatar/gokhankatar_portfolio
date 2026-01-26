@@ -385,94 +385,97 @@
     <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
 
     <!-- Contact Section -->
-    <v-sheet id="contact" class="bg-transparent">
+    <v-sheet id="contact" class="bg-transparent contact-section">
       <v-container>
-        <p
-          class="text-center text-subtitle-1 text-md-h6 text-lg-h5 text-xl-h4 font-weight-bold mb-5"
-          style="letter-spacing: 1px !important"
-        >
-          Contact Me
+        <p class="section-title">Contact Me</p>
+        <p class="section-subtitle contact-subtitle">
+          If you'd like to work on a project together or just say hello, feel free to
+          reach out!
         </p>
-        <v-row>
-          <v-col cols="12" lg="6" xl="4">
-            <p
-              class="text-center text-caption text-lg-subtitle-2 text-xl-subtitle-1 mb-6"
-              style="letter-spacing: 1px !important"
-            >
-              If you'd like to work on a project together or just say hello, feel free to
-              reach out!
-            </p>
 
-            <v-row class="contact-links" dense>
-              <v-col v-for="item in contactCards" :key="item.label" cols="12" sm="6">
-                <v-card
-                  class="contact-card"
-                  variant="tonal"
-                  :ripple="false"
-                  :href="item.href"
-                  :target="item.target"
-                >
-                  <v-icon :icon="item.icon" size="22" />
-                  <div>
-                    <p class="contact-card-title">{{ item.label }}</p>
-                    <p class="contact-card-value text-caption text-xl-subtitle-2">
-                      {{ item.value }}
-                    </p>
-                  </div>
-                </v-card>
-              </v-col>
-            </v-row>
+        <v-row class="contact-grid" align="stretch" :dense="display.smAndDown.value">
+          <v-col cols="12" lg="5">
+            <div class="contact-info-grid">
+              <v-card
+                v-for="item in contactCards"
+                :key="item.label"
+                class="contact-card d-flex flex-column align-start"
+                variant="tonal"
+                :ripple="false"
+                :href="item.href"
+                :target="item.target"
+              >
+                <v-icon :icon="item.icon" :size="display.xl.value ? 46 : 22" />
+                <div>
+                  <p class="contact-card-title text-subtitle-2 text-xl-subtitle-1">{{ item.label }}</p>
+                  <p class="contact-card-value text-caption text-lg-subtitle-2 text-xl-subtitle-1">
+                    {{ item.value }}
+                  </p>
+                </div>
+              </v-card>
+            </div>
           </v-col>
 
-          <v-col cols="12" lg="6" xl="8">
-            <div class="contact-form">
-              <v-form @submit.prevent="handleSubmit">
-                <v-text-field
-                  v-model="form.name"
-                  label="Your Name"
-                  required
-                  prepend-inner-icon="mdi-account"
-                  variant="outlined"
-                  hide-details="auto"
-                  :density="display.xl.value ? 'default' : 'compact'"
-                />
-                <v-text-field
-                  v-model="form.email"
-                  label="Email"
-                  type="email"
-                  prepend-inner-icon="mdi-email"
-                  required
-                  class="my-2 my-xl-4"
-                  variant="outlined"
-                  hide-details="auto"
-                  :density="display.xl.value ? 'default' : 'compact'"
-                />
-                <v-textarea
-                  v-model="form.message"
-                  label="Your Message"
-                  required
-                  variant="outlined"
-                  rows="5"
-                  prepend-inner-icon="mdi-message"
-                  hide-details="auto"
-                  counter
-                  max-length="300"
-                  placeholder="I want to build a website for my business"
-                  no-resize
-                  :density="display.xl.value ? 'default' : 'compact'"
-                />
+          <v-col cols="12" lg="7">
+            <div class="contact-form-card">
+              <div class="contact-form-header d-flex justify-space-between align-center">
+                <div>
+                  <p class="contact-card-title">Send a message</p>
+                  <p class="contact-card-value">I usually respond within 24 hours.</p>
+                </div>
+                <v-icon icon="mdi-send" size="22" />
+              </div>
+                <v-form @submit.prevent="handleSubmit">
+                  <v-text-field
+                    v-model="form.name"
+                    label="Your Name"
+                    required
+                    prepend-inner-icon="mdi-account"
+                    variant="outlined"
+                    hide-details="auto"
+                    :density="display.xl.value ? 'default' : 'compact'"
+                    :rules="rules.name"
+                  />
+                  <v-text-field
+                    v-model="form.email"
+                    label="Email"
+                    type="email"
+                    prepend-inner-icon="mdi-email"
+                    required
+                    class="my-2 my-xl-4"
+                    variant="outlined"
+                    hide-details="auto"
+                    :density="display.xl.value ? 'default' : 'compact'"
+                    :rules="rules.email"
+                  />
+                  <v-textarea
+                    v-model="form.message"
+                    label="Your Message"
+                    required
+                    variant="outlined"
+                    rows="5"
+                    prepend-inner-icon="mdi-message"
+                    hide-details="auto"
+                    counter
+                    max-length="300"
+                    placeholder="I want to build a website for my business"
+                    no-resize
+                    :density="display.xl.value ? 'default' : 'compact'"
+                    :rules="rules.message"
+                  />
 
-                <v-btn
-                  type="submit"
-                  color="error"
-                  size="large"
-                  variant="flat"
-                  class="text-none"
-                  :ripple="false"
-                  text="Send"
-                  prepend-icon="mdi-check"
-                />
-              </v-form>
+                  <v-btn
+                    type="submit"
+                    color="error"
+                    :size="display.xl.value ? 'default' : 'small'"
+                    variant="flat"
+                    :block="display.smAndDown.value"
+                    class="text-none"
+                    :ripple="false"
+                    text="Send"
+                    prepend-icon="mdi-check"
+                  />
+                </v-form>
             </div>
           </v-col>
         </v-row>
@@ -486,12 +489,14 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useTheme } from "vuetify";
+import { useDisplay } from "vuetify/lib/composables/display.mjs";
 import type {
   Project,
   Skill,
   UsedTechnologies,
   UsedTechnologyGroup,
 } from "~/composables/core/interfaces";
+import { aboutHighlights, contactCards } from "~/utils/contentData";
 
 const display = useDisplay();
 
@@ -535,6 +540,22 @@ const truncateText = (text: string, maxLength: number) => {
   return `${text.slice(0, maxLength).trim()}...`;
 };
 
+const rules = {
+  name: [
+    (v: string) => !!v || "Name is required",
+    (v: string) => (v && v.length >= 2) || "Name must be at least 2 characters",
+  ],
+  email: [
+    (v: string) => !!v || "Email is required",
+    (v: string) =>
+      (v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) || "Enter a valid email address",
+  ],
+  message: [
+    (v: string) => !!v || "Message is required",
+    (v: string) => (v && v.length >= 10) || "Message must be at least 10 characters",
+  ],
+};
+
 const getProjectSlug = (project: Project) => {
   if (project.id) return project.id;
   return project.project_name
@@ -571,79 +592,6 @@ const getSkillCategoryClass = (fields?: string[]) => {
   const field = fields?.[0] || "tools";
   return `skill-icon--${field}`;
 };
-
-const aboutHighlights = [
-  {
-    title: "Clean Code Projects",
-    description:
-      "Readable, maintainable codebases built with modern best practices and solid architecture.",
-    icon: "mdi-code-braces",
-    tone: "tone-red",
-  },
-  {
-    title: "Modern Tech Stack",
-    description:
-      "Nuxt, Vue, TypeScript, and cloud-first tooling to keep your product future-ready.",
-    icon: "mdi-rocket-launch",
-    tone: "tone-blue",
-  },
-  {
-    title: "Secure and Fast",
-    description: "Performance-first delivery with security-minded patterns from day one.",
-    icon: "mdi-shield-check",
-    tone: "tone-green",
-  },
-  {
-    title: "Custom Software Services",
-    description:
-      "Tailored solutions aligned with your goals, workflows, and unique business needs.",
-    icon: "mdi-account-cog",
-    tone: "tone-purple",
-  },
-  {
-    title: "Scalable Architecture",
-    description:
-      "Built to grow with traffic, features, and teams without costly rewrites.",
-    icon: "mdi-chart-line",
-    tone: "tone-orange",
-  },
-  {
-    title: "Reliable Partnership",
-    description: "Clear communication, thoughtful planning, and dependable delivery.",
-    icon: "mdi-handshake",
-    tone: "tone-teal",
-  },
-];
-
-const contactCards = [
-  {
-    label: "Email",
-    value: "katar_gokhan@hotmail.com",
-    icon: "mdi-email",
-    href: "mailto:katar_gokhan@hotmail.com",
-  },
-  {
-    label: "YouTube",
-    value: "npmrungame",
-    icon: "mdi-youtube",
-    href: "https://www.youtube.com/@npmrungame",
-    target: "_blank",
-  },
-  {
-    label: "LinkedIn",
-    value: "gokhankatar",
-    icon: "mdi-linkedin",
-    href: "https://linkedin.com/in/gokhankatar",
-    target: "_blank",
-  },
-  {
-    label: "GitHub",
-    value: "gokhankatar",
-    icon: "mdi-github",
-    href: "https://github.com/gokhankatar",
-    target: "_blank",
-  },
-];
 
 const handleSubmit = async () => {
   // Form submission logic will be implemented
