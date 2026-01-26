@@ -407,8 +407,12 @@
               >
                 <v-icon :icon="item.icon" :size="display.xl.value ? 46 : 22" />
                 <div>
-                  <p class="contact-card-title text-subtitle-2 text-xl-subtitle-1">{{ item.label }}</p>
-                  <p class="contact-card-value text-caption text-lg-subtitle-2 text-xl-subtitle-1">
+                  <p class="contact-card-title text-subtitle-2 text-xl-subtitle-1">
+                    {{ item.label }}
+                  </p>
+                  <p
+                    class="contact-card-value text-caption text-lg-subtitle-2 text-xl-subtitle-1"
+                  >
                     {{ item.value }}
                   </p>
                 </div>
@@ -425,57 +429,57 @@
                 </div>
                 <v-icon icon="mdi-send" size="22" />
               </div>
-                <v-form @submit.prevent="handleSubmit">
-                  <v-text-field
-                    v-model="form.name"
-                    label="Your Name"
-                    required
-                    prepend-inner-icon="mdi-account"
-                    variant="outlined"
-                    hide-details="auto"
-                    :density="display.xl.value ? 'default' : 'compact'"
-                    :rules="rules.name"
-                  />
-                  <v-text-field
-                    v-model="form.email"
-                    label="Email"
-                    type="email"
-                    prepend-inner-icon="mdi-email"
-                    required
-                    class="my-2 my-xl-4"
-                    variant="outlined"
-                    hide-details="auto"
-                    :density="display.xl.value ? 'default' : 'compact'"
-                    :rules="rules.email"
-                  />
-                  <v-textarea
-                    v-model="form.message"
-                    label="Your Message"
-                    required
-                    variant="outlined"
-                    rows="5"
-                    prepend-inner-icon="mdi-message"
-                    hide-details="auto"
-                    counter
-                    max-length="300"
-                    placeholder="I want to build a website for my business"
-                    no-resize
-                    :density="display.xl.value ? 'default' : 'compact'"
-                    :rules="rules.message"
-                  />
+              <v-form @submit.prevent="handleSubmit" ref="contactFormRef">
+                <v-text-field
+                  v-model="form.name"
+                  label="Your Name"
+                  required
+                  prepend-inner-icon="mdi-account"
+                  variant="outlined"
+                  hide-details="auto"
+                  :density="display.xl.value ? 'default' : 'compact'"
+                  :rules="rules.name"
+                />
+                <v-text-field
+                  v-model="form.email"
+                  label="Email"
+                  type="email"
+                  prepend-inner-icon="mdi-email"
+                  required
+                  class="my-2 my-xl-4"
+                  variant="outlined"
+                  hide-details="auto"
+                  :density="display.xl.value ? 'default' : 'compact'"
+                  :rules="rules.email"
+                />
+                <v-textarea
+                  v-model="form.message"
+                  label="Your Message"
+                  required
+                  variant="outlined"
+                  rows="5"
+                  prepend-inner-icon="mdi-message"
+                  hide-details="auto"
+                  counter
+                  max-length="300"
+                  placeholder="I want to build a website for my business"
+                  no-resize
+                  :density="display.xl.value ? 'default' : 'compact'"
+                  :rules="rules.message"
+                />
 
-                  <v-btn
-                    type="submit"
-                    color="error"
-                    :size="display.xl.value ? 'default' : 'small'"
-                    variant="flat"
-                    :block="display.smAndDown.value"
-                    class="text-none"
-                    :ripple="false"
-                    text="Send"
-                    prepend-icon="mdi-check"
-                  />
-                </v-form>
+                <v-btn
+                  type="submit"
+                  color="error"
+                  :size="display.xl.value ? 'default' : 'small'"
+                  variant="flat"
+                  :block="display.smAndDown.value"
+                  class="text-none"
+                  :ripple="false"
+                  text="Send"
+                  prepend-icon="mdi-check"
+                />
+              </v-form>
             </div>
           </v-col>
         </v-row>
@@ -489,6 +493,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useTheme } from "vuetify";
+import type { VForm } from "vuetify/components";
 import { useDisplay } from "vuetify/lib/composables/display.mjs";
 import type {
   Project,
@@ -508,6 +513,7 @@ const form = ref({
 
 const theme = useTheme();
 const selectedCategory = ref("all");
+const contactFormRef = ref<InstanceType<typeof VForm> | null>(null);
 
 const { data: skills, pending: skillsLoading, error: skillsError } = await useFetch<
   Skill[]
@@ -594,10 +600,13 @@ const getSkillCategoryClass = (fields?: string[]) => {
 };
 
 const handleSubmit = async () => {
-  // Form submission logic will be implemented
-  console.log("Form submitted:", form.value);
-  alert("Your message has been sent!");
-  form.value = { name: "", email: "", message: "" };
+  const result = await contactFormRef.value?.validate();
+  if (!result?.valid) return;
+
+  try {
+  } catch (error: any) {
+    console.error("Error sending message:", error);
+  }
 };
 
 useHead({
