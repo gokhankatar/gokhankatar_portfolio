@@ -13,7 +13,7 @@
       <v-row align="center" justify="space-between" no-gutters class="app-header__row">
         <v-col cols="auto">
           <NuxtLink to="/" class="text-decoration-none">
-            <span class="text-h5 font-weight-bold" style="color: #d34a4c">GK</span>
+            <span class="text-h6 font-weight-bold app-header__brand">Gokhan Katar</span>
           </NuxtLink>
         </v-col>
 
@@ -126,6 +126,21 @@ onUnmounted(() => {
 .app-header__actions {
   margin-left: auto;
   flex-wrap: nowrap;
+}
+
+.app-header__brand {
+  background: linear-gradient(120deg, #ff6a6a, #ffd36e, #f6a5ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.02em;
+}
+
+:deep(.v-theme--dark) .app-header__brand {
+  background: linear-gradient(120deg, #8ff0b6, #7ad7c4, #9ad0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 @media (max-width: 960px) {

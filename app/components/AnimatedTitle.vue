@@ -81,9 +81,11 @@ const words = computed(() => props.text.split(" "));
 .animated-title__char {
   display: inline-block;
   opacity: 0;
-  animation-duration: 700ms;
+  animation-duration: 1600ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
   animation-delay: calc(var(--char-delay, 0ms) + var(--char-index, 0) * 40ms);
   animation-name: fade-up;
 }

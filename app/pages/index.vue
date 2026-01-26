@@ -5,54 +5,50 @@
       id="home"
       class="hero-section"
       :class="{ 'hero-section--dark': theme.current.value.dark }"
-      :style="{ minHeight: 'calc(100vh - 64px)' }"
     >
       <v-container class="hero-container">
         <div class="hero-content">
           <div class="profile-placeholder">
-            <v-avatar :size="display.lgAndUp.value ? 220 : 140" class="profile-avatar">
+            <v-avatar :size="display.xl.value ? 220 : 140" class="profile-avatar">
               <v-img src="/img/profile.png" alt="Gokhan Katar" cover></v-img>
             </v-avatar>
           </div>
-          <div class="text-subtitle-1 text-xl-h6 mb-2" style="opacity: 0.9">
-            Hello, I'm
-          </div>
+          <p class="hero-kicker">Hello, I'm</p>
           <AnimatedTitle
             text="Gokhan Katar"
             variant="glow"
-            class="hero-name text-h5 text-md-h4 text-lg-h3 text-xl-h2 text-md-h1 font-weight-bold mb-4"
+            class="hero-name hero-title text-subtitle-1 text-md-h5 text-lg-h4 text-xl-h3"
           />
-          <div
-            class="text-subbtitle-2 text-sm-subtitle-1 text-lg-h4 text-xl-h3 font-weight-bold mb-4"
-          >
-            Web Developer
+          <p class="hero-role">Full-Stack Web Developer</p>
+          <div class="hero-badges">
+            <span class="hero-badge">Nuxt & Vue</span>
+            <span class="hero-badge">Firebase & Supabase</span>
+            <span class="hero-badge">UX-focused Delivery</span>
           </div>
-          <p
-            class="text-caption text-sm-subtitle-2 text-lg-subtitle-1 text-xl-h6 mb-6"
-            style="opacity: 0.9"
-          >
-            I design and develop robust, high-performance web applications by taking full
-            ownership of both frontend and backend layers. I focus on crafting intuitive,
-            user-centric interfaces while building scalable, secure, and maintainable
-            backend architectures. By leveraging modern web technologies, clean code
-            principles, and performance-driven design, I deliver reliable,
-            production-ready systems that scale with real-world usage.
+          <p class="hero-summary text-caption text-sm-subtitle-2 text-lg-subtitle-1">
+            {{
+              display.xs.value
+                ? "End-to-end web development focused on performance, scalability, and clean architecture with user-centered design."
+                : "I design and build high-performance web applications with end-to-end ownership across frontend and backend. I create intuitive, user-focused interfaces and scalable, secure backend systems using modern technologies, clean code principles, and performance-driven design to deliver reliable, production-ready solutions."
+            }}
           </p>
-          <div class="d-flex flex-wrap ga-4 justify-center">
+          <div class="hero-actions">
             <v-btn
               href="#projects"
-              size="large"
+              :size="display.xl.value ? 'large' : 'default'"
               variant="flat"
               class="hero-btn hero-btn-primary"
               text="View My Projects"
+              :ripple="false"
             />
 
             <v-btn
               href="#contact"
-              size="large"
+              :size="display.xl.value ? 'large' : 'default'"
               variant="outlined"
               class="hero-btn hero-btn-secondary"
               text="Get In Touch"
+              :ripple="false"
             />
           </div>
         </div>
@@ -63,26 +59,48 @@
     <v-sheet id="about" class="bg-transparent">
       <v-container>
         <p
-          class="text-h5 text-sm-h4 text-lg-h3 text-xl-h2 font-weight-bold text-center my-5"
+          class="text-center text-subtitle-1 text-md-h6 text-lg-h5 text-xl-h4 font-weight-bold mb-5"
+          style="letter-spacing: 1px !important"
         >
           About Me
         </p>
         <v-row justify="center">
-          <v-col cols="12" md="8">
-            <p
-              class="text-center text-caption text-sm-subtitle-2 text-lg-subtitle-1 text-xl-h6 mb-4"
-            >
-              Hello! I'm Gokhan Katar, a passionate web developer. I develop user-focused,
-              high-performance, and scalable web applications using modern web
-              technologies.
+          <v-col cols="12" md="9">
+            <p class="section-subtitle">
+              I build modern web products with a focus on clarity, performance, and
+              maintainable architecture.
             </p>
-            <p
-              class="text-center text-caption text-sm-subtitle-2 text-lg-subtitle-1 text-xl-h6 mb-4"
-            >
-              Experienced in both frontend and backend technologies, I'm always open to
-              learning and exploring new technologies. I strive to write clean and
-              maintainable code by applying best practices in every project.
-            </p>
+
+            <div class="about-intro">
+              <p class="about-lede text-center">
+                I work across the full stack—from UI design and frontend engineering to
+                backend systems and deployment. My goal is to ship fast, clean, and
+                reliable experiences that scale with real usage.
+              </p>
+              <div class="about-points">
+                <div class="about-point">
+                  <v-icon icon="mdi-check-circle-outline" size="18" />
+                  <span>Clear UX, strong visual hierarchy, and intentional details.</span>
+                </div>
+                <div class="about-point">
+                  <v-icon icon="mdi-check-circle-outline" size="18" />
+                  <span>Secure, scalable APIs and data workflows.</span>
+                </div>
+                <div class="about-point">
+                  <v-icon icon="mdi-check-circle-outline" size="18" />
+                  <span
+                    >Clean code, reusable components, and long-term maintainability.</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="about-tags">
+              <span class="about-tag">Clean Architecture</span>
+              <span class="about-tag">Performance First</span>
+              <span class="about-tag">Responsive UI</span>
+              <span class="about-tag">Reliable Delivery</span>
+            </div>
 
             <v-row class="mt-8" dense>
               <v-col
@@ -103,7 +121,6 @@
 
                   <p
                     class="text-subtitle-2 text-lg-subtitle-1 font-weight-bold mb-0 mt-2"
-                    style="letter-spacing: 1px !"
                   >
                     {{ item.title }}
                   </p>
@@ -125,31 +142,58 @@
     <v-sheet id="skills" class="bg-transparent">
       <v-container>
         <p
-          class="text-h5 text-sm-h4 text-lg-h3 text-xl-h2 font-weight-bold text-center my-5"
+          class="text-center text-subtitle-1 text-md-h6 text-lg-h5 text-xl-h4 font-weight-bold mb-5"
+          style="letter-spacing: 1px !important"
         >
           Skills
         </p>
 
-        <div class="d-flex flex-wrap justify-center justify-sm-end ga-2 w-100 mb-3">
+        <div class="skills-filter">
           <v-chip-group
             v-model="selectedCategory"
-            class="skills-chips d-flex flex-wrap"
+            class="skills-chips d-flex flex-wrap justify-center justify-sm-end"
             filter
             selected-class="text-primary"
           >
-            <v-chip value="all" variant="tonal" class="skills-chip"> All </v-chip>
-            <v-chip value="front_end" variant="tonal" color="blue" class="skills-chip">
-              Front End
-            </v-chip>
-            <v-chip value="back_end" variant="tonal" color="green" class="skills-chip">
-              Back End
-            </v-chip>
-            <v-chip value="library" variant="tonal" color="purple" class="skills-chip">
-              Library
-            </v-chip>
-            <v-chip value="tools" variant="tonal" color="orange" class="skills-chip">
-              Tools
-            </v-chip>
+            <v-chip
+              value="all"
+              variant="tonal"
+              class="skills-chip"
+              :size="display.xl.value ? 'default' : 'small'"
+              text="All"
+            />
+            <v-chip
+              value="front_end"
+              variant="tonal"
+              color="blue"
+              :size="display.xl.value ? 'default' : 'small'"
+              class="skills-chip"
+              text="Front End"
+            />
+            <v-chip
+              value="back_end"
+              variant="tonal"
+              :size="display.xl.value ? 'default' : 'small'"
+              color="green"
+              class="skills-chip"
+              text="Back End"
+            />
+            <v-chip
+              value="library"
+              variant="tonal"
+              :size="display.xl.value ? 'default' : 'small'"
+              color="purple"
+              class="skills-chip"
+              text="Library"
+            />
+            <v-chip
+              value="tools"
+              variant="tonal"
+              :size="display.xl.value ? 'default' : 'small'"
+              color="orange"
+              class="skills-chip"
+              text="Tools"
+            />
           </v-chip-group>
         </div>
 
@@ -167,7 +211,7 @@
               <v-alert type="error" variant="tonal">{{ skillsError }}</v-alert>
             </div>
 
-            <v-row v-else class="justify-center">
+            <v-row v-else class="justify-center skills-grid">
               <v-col
                 v-for="(skill, index) in filteredSkills"
                 :key="skill.id || index"
@@ -175,7 +219,7 @@
                 sm="3"
                 md="2"
                 lg="1"
-                class="d-flex justify-cen"
+                class="d-flex justify-center"
               >
                 <v-tooltip location="top">
                   <template #activator="{ props }">
@@ -231,18 +275,46 @@
     <v-sheet id="projects" class="bg-transparent">
       <v-container>
         <p
-          class="text-h5 text-sm-h4 text-lg-h3 text-xl-h2 font-weight-bold text-center my-5"
+          class="text-center text-subtitle-1 text-md-h6 text-lg-h5 text-xl-h4 font-weight-bold mb-5"
+          style="letter-spacing: 1px !important"
         >
           My Projects
         </p>
-        <v-row>
-          <v-col v-for="project in projects" :key="project.id" cols="12" md="6" lg="4">
-            <v-card elevation="4" class="h-100" hover>
+        <v-row v-if="projectsLoading" justify="center" align="center" :dense="display.smAndDown.value">
+          <v-col
+            v-for="n in 4"
+            :key="`project-skeleton-${n}`"
+            cols="12"
+            sm="6"
+            lg="4"
+            xl="3"
+          >
+            <v-skeleton-loader
+              type="card"
+              class="project-card h-auto"
+            />
+          </v-col>
+        </v-row>
+
+        <div v-else-if="projectsError" class="text-center py-8">
+          <v-alert type="error" variant="tonal">Failed to load projects.</v-alert>
+        </div>
+
+        <v-row v-else justify="center" align="center" :dense="display.smAndDown.value">
+          <v-col
+            v-for="project in projects"
+            :key="project.id"
+            cols="12"
+            sm="6"
+            lg="4"
+            xl="3"
+          >
+            <v-card elevation="4" class="project-card h-auto" hover>
               <v-img
-                height="200"
-                :src="getProjectImage(project.title)"
+                height="60%"
+                :src="project.preview_img || ''"
                 cover
-                class="bg-grey-lighten-3"
+                class="project-image bg-grey-lighten-3"
               >
                 <template v-slot:placeholder>
                   <div class="d-flex align-center justify-center fill-height">
@@ -250,42 +322,56 @@
                   </div>
                 </template>
               </v-img>
-              <v-card-title class="text-h5 font-weight-bold">{{
-                project.title
-              }}</v-card-title>
+
+              <v-card-title
+                class="text-caption text-lg-subtitle-2 text-xl-h6 font-weight-bold"
+              >
+                {{ project.project_name }}
+              </v-card-title>
+
               <v-card-text>
-                <p class="text-subtitle-1 mb-4">{{ project.description }}</p>
-                <div class="d-flex flex-wrap ga-2 mb-4">
+                <p class="text-caption text-xl-subtitle-2 mb-4">
+                  {{
+                    display.xs.value
+                      ? truncateText(project.project_description, 60)
+                      : truncateText(project.project_description, 100)
+                  }}
+                </p>
+                <div
+                  v-if="getProjectTechnologies(project).length"
+                  class="project-tech-preview"
+                >
                   <v-chip
-                    v-for="tag in project.tags"
-                    :key="tag"
+                    v-for="tech in getProjectTechnologies(project).slice(0, 3)"
+                    :key="tech"
+                    :size="display.xl.value ? 'small' : 'x-small'"
+                    variant="tonal"
+                    class="project-tech-chip"
+                    :text="tech"
+                  />
+                  <v-btn
+                    v-if="getProjectTechnologies(project).length > 3"
+                    :to="`/projects/${getProjectSlug(project)}`"
+                    variant="text"
                     size="small"
-                    variant="outlined"
-                  >
-                    {{ tag }}
-                  </v-chip>
+                    class="project-tech-more"
+                    text="More"
+                    :ripple="false"
+                  />
                 </div>
                 <div class="d-flex ga-2">
                   <v-btn
-                    v-if="project.demo"
-                    :href="project.demo"
+                    v-if="project.project_link"
+                    :href="project.project_link"
                     target="_blank"
                     color="error"
                     variant="text"
-                    size="small"
-                  >
-                    Live Demo
-                  </v-btn>
-                  <v-btn
-                    v-if="project.github"
-                    :href="project.github"
-                    target="_blank"
-                    color="error"
-                    variant="text"
-                    size="small"
-                  >
-                    GitHub
-                  </v-btn>
+                    :size="display.xl.value ? 'small' : 'x-small'"
+                    :ripple="false"
+                    append-icon="mdi-open-in-new"
+                    class="project-link-btn"
+                    text="View Project"
+                  />
                 </div>
               </v-card-text>
             </v-card>
@@ -299,14 +385,15 @@
     <!-- Contact Section -->
     <v-sheet id="contact" class="bg-transparent">
       <v-container>
-        <AnimatedTitle
-          text="Contact"
-          variant="wave"
-          class="text-h3 text-md-h2 text-center font-weight-bold mb-8"
-        />
+        <p
+          class="text-center text-subtitle-1 text-md-h6 text-lg-h5 text-xl-h4 font-weight-bold mb-5"
+          style="letter-spacing: 1px !important"
+        >
+          Contact Me
+        </p>
         <v-row>
           <v-col cols="12" md="5">
-            <p class="text-h6 mb-6">
+            <p class="text-subtitle-1 mb-6">
               If you'd like to work on a project together or just say hello, feel free to
               reach out!
             </p>
@@ -316,6 +403,7 @@
                 variant="text"
                 prepend-icon="mdi-email"
                 class="justify-start"
+                :ripple="false"
               >
                 katar_gokhan@hotmail.com
               </v-btn>
@@ -325,6 +413,7 @@
                 variant="text"
                 prepend-icon="mdi-youtube"
                 class="justify-start"
+                :ripple="false"
               >
                 npmrungame
               </v-btn>
@@ -334,6 +423,7 @@
                 variant="text"
                 prepend-icon="mdi-linkedin"
                 class="justify-start"
+                :ripple="false"
               >
                 LinkedIn
               </v-btn>
@@ -343,6 +433,7 @@
                 variant="text"
                 prepend-icon="mdi-github"
                 class="justify-start"
+                :ripple="false"
               >
                 GitHub
               </v-btn>
@@ -380,6 +471,7 @@
                   size="large"
                   variant="flat"
                   class="text-none"
+                  :ripple="false"
                 >
                   Send
                 </v-btn>
@@ -397,6 +489,12 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useTheme } from "vuetify";
+import type {
+  Project,
+  Skill,
+  UsedTechnologies,
+  UsedTechnologyGroup,
+} from "~/composables/core/interfaces";
 
 const display = useDisplay();
 
@@ -409,17 +507,14 @@ const form = ref({
 const theme = useTheme();
 const selectedCategory = ref("all");
 
-interface Skill {
-  id?: string;
-  skill_name: string;
-  field: string[];
-  skill_logo: string;
-  order: number;
-}
-
 const { data: skills, pending: skillsLoading, error: skillsError } = await useFetch<
   Skill[]
 >("/api/skills", {
+  default: () => [],
+});
+
+const { data: projects, pending: projectsLoading, error: projectsError } =
+  await useFetch<Project[]>("/api/projects", {
   default: () => [],
 });
 
@@ -434,6 +529,32 @@ const filteredSkills = computed(() => {
 
 const formatField = (field?: string) => {
   return field ? field.replace(/_/g, " ") : "";
+};
+
+const truncateText = (text: string, maxLength: number) => {
+  if (!text) return "";
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).trim()}...`;
+};
+
+const getProjectSlug = (project: Project) => {
+  if (project.id) return project.id;
+  return project.project_name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+};
+
+const getProjectTechnologies = (project: Project) => {
+  const tech: UsedTechnologies | undefined = project.used_technologies;
+  if (!tech) return [];
+  if (Array.isArray(tech) && tech.length > 0) {
+    if (typeof tech[0] === "string") {
+      return tech as string[];
+    }
+    return (tech as UsedTechnologyGroup[]).flatMap((group) => group.items);
+  }
+  return [];
 };
 
 const handleImageError = (event: Event) => {
@@ -495,43 +616,6 @@ const aboutHighlights = [
     tone: "tone-teal",
   },
 ];
-
-const projects = ref([
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    description: "Modern e-commerce solution with payment integration",
-    tags: ["Vue.js", "Firebase", "Stripe"],
-    demo: "#",
-    github: "#",
-  },
-  {
-    id: 2,
-    title: "Task Management App",
-    description: "Collaborative task management with real-time updates",
-    tags: ["Nuxt.js", "Supabase", "TypeScript"],
-    demo: "#",
-    github: "#",
-  },
-  {
-    id: 3,
-    title: "Portfolio Website",
-    description: "Personal portfolio website with modern design",
-    tags: ["Nuxt.js", "Vue.js", "CSS3"],
-    demo: "#",
-    github: "#",
-  },
-]);
-
-const getProjectImage = (title: string) => {
-  const svg = `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-    <rect width="400" height="300" fill="#f0f0f0"/>
-    <text x="200" y="150" text-anchor="middle" fill="#999" font-size="24">${title}</text>
-  </svg>`;
-  return `data:image/svg+xml;base64,${
-    typeof window !== "undefined" ? window.btoa(svg) : ""
-  }`;
-};
 
 const handleSubmit = async () => {
   // Form submission logic will be implemented
