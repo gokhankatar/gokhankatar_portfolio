@@ -5,12 +5,14 @@
       <AppHeader />
       <NuxtPage />
       <AppFooter v-if="showFooter" />
+      <ScrollToTop />
     </div>
   </template>
 </template>
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from "vue";
 import AppLoading from "~/components/common/AppLoading.vue";
+import ScrollToTop from "~/components/common/ScrollToTop.vue";
 import AppFooter from "~/components/layout/AppFooter.vue";
 import AppHeader from "~/components/layout/AppHeader.vue";
 
