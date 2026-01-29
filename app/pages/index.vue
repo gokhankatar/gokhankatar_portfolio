@@ -399,6 +399,15 @@
 
     <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
 
+    <!-- Experience Section -->
+    <v-sheet id="experience" class="bg-transparent">
+      <v-container>
+        <ExperienceTimeline />
+      </v-container>
+    </v-sheet>
+
+    <v-responsive :height="display.lgAndUp.value ? 150 : 50" />
+
     <!-- Contact Section -->
     <v-sheet id="contact" class="bg-transparent contact-section">
       <v-container>
@@ -510,6 +519,7 @@ import { ref, computed } from "vue";
 import { useTheme } from "vuetify";
 import type { VForm } from "vuetify/components";
 import { useDisplay } from "vuetify/lib/composables/display.mjs";
+import ExperienceTimeline from "~/components/homepage/ExperienceTimeline.vue";
 import type {
   Project,
   Skill,
@@ -630,5 +640,5 @@ useHead({
 </script>
 
 <style scoped>
-@import url("../assets/css/main.css");
+@import url("~/assets/css/main.css");
 </style>

@@ -485,6 +485,123 @@ section[id] {
   margin-bottom: 12px;
 }
 
+.experience-section {
+  margin-top: 36px;
+}
+
+.experience-list--xs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 10px;
+}
+
+.experience-list--loading {
+  margin-top: 4px;
+}
+
+.experience-skeleton {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.experience-timeline--xs {
+  padding: 0 10px;
+}
+
+.experience-card {
+  width: 100%;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.experience-card--xs {
+  border-radius: 12px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.experience-timeline .v-timeline-item__body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.experience-timeline .v-timeline-item {
+  justify-content: center;
+}
+
+.v-theme--dark .experience-card {
+  background: rgba(18, 20, 26, 0.75);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.experience-card__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.experience-title {
+  margin: 0;
+}
+
+.experience-meta {
+  color: rgba(31, 41, 55, 0.7);
+}
+
+.v-theme--dark .experience-meta {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.experience-description {
+  color: rgba(31, 41, 55, 0.78);
+}
+
+.v-theme--dark .experience-description {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.experience-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.experience-chip {
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+}
+
+.extra-small-text {
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .experience-timeline {
+    padding: 0 8px;
+  }
+
+  .experience-card {
+    max-width: 100%;
+  }
+
+  .experience-timeline .v-timeline-item__body,
+  .experience-timeline .v-timeline-item {
+    padding-inline: 0;
+  }
+
+  .experience-card__title {
+    flex-wrap: wrap;
+  }
+}
+
 @media (max-width: 960px) {
   .contact-info-grid {
     grid-template-columns: 1fr;
@@ -580,6 +697,14 @@ section[id] {
   background: rgba(255, 255, 255, 0.75);
   color: #1f2937;
   border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.extra-small-text {
+  font-size: .6rem;
+}
+
+.experience-title {
+  white-space: normal !important;
 }
 
 .about-grid {

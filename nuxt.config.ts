@@ -83,10 +83,10 @@ export default defineNuxtConfig({
       ["isDate", "isLodashDate"],
     ],
   },
-  css: ["~/assets/css/main.css"],
+  css: ["./assets/css/main.css"],
   devtools: { enabled: false },
   devServer: {
     host: "0.0.0.0",
-    port: 4000,
+    port: 5000,
   },
 });

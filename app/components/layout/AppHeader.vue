@@ -34,6 +34,18 @@
         </v-col>
 
         <v-col cols="auto" class="d-flex align-center ga-2 app-header__actions">
+          <v-btn
+            href="/cv.pdf"
+            target="_blank"
+            download="Gokhan_Katar_CV.pdf"
+            variant="tonal"
+            class="app-header__cv d-none d-md-inline-flex"
+            :ripple="false"
+            aria-label="Download CV"
+          >
+            <v-icon size="18">mdi-download</v-icon>
+            Download CV
+          </v-btn>
           <button
             type="button"
             class="theme-toggle"
@@ -79,6 +91,17 @@
           :prepend-icon="item.icon"
           :text="item.label"
         />
+        <v-btn
+          href="/cv.pdf"
+          target="_blank"
+          download="Gokhan_Katar_CV.pdf"
+          variant="tonal"
+          class="mobile-menu__cta"
+          :ripple="false"
+        >
+          <v-icon size="18">mdi-download</v-icon>
+          Download CV
+        </v-btn>
       </div>
 
         <div class="mobile-menu__footer">
@@ -202,6 +225,25 @@ onUnmounted(() => {
 .app-header__actions {
   margin-left: auto;
   flex-wrap: nowrap;
+}
+
+.app-header__cv {
+  border-radius: 999px;
+  text-transform: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding-inline: 16px;
+  gap: 8px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff7a7a 0%, #ff5d8f 45%, #7a7dff 100%);
+  border: none;
+  box-shadow: 0 10px 22px rgba(255, 93, 143, 0.35);
+}
+
+.app-header__cv:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #ff7a7a 0%, #ff4f88 45%, #6d7bff 100%);
+  box-shadow: 0 14px 28px rgba(255, 93, 143, 0.45);
 }
 
 .app-header__brand {
@@ -340,6 +382,29 @@ onUnmounted(() => {
 .mobile-menu__link:hover {
   transform: translateY(-2px);
   background: rgba(240, 106, 108, 0.12);
+}
+
+.mobile-menu__cta {
+  margin-top: 4px;
+  text-transform: none;
+  border-radius: 14px;
+  justify-content: center;
+  gap: 10px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff7a7a 0%, #ff5d8f 45%, #7a7dff 100%);
+  border: none;
+  box-shadow: 0 10px 22px rgba(255, 93, 143, 0.35);
+}
+
+.v-theme--light .mobile-menu__cta {
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff7a7a 0%, #ff5d8f 45%, #7a7dff 100%);
+}
+
+.mobile-menu__cta:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #ff7a7a 0%, #ff4f88 45%, #6d7bff 100%);
+  box-shadow: 0 14px 28px rgba(255, 93, 143, 0.45);
 }
 
 .v-theme--light .mobile-menu {

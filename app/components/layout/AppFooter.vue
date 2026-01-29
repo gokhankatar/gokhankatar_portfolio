@@ -130,5 +130,5 @@ const footerLinks = [
 </script>
 
 <style scoped>
-@import "../assets/css/footer.css";
+@import url("~/assets/css/footer.css");
 </style>

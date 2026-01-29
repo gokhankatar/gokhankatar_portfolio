@@ -10,11 +10,9 @@
 
 .v-theme--light .app-footer {
   border-top: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(242, 244, 248, 0.98)
-  );
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(242, 244, 248, 0.98));
 }
 
 .footer-container {
