@@ -38,7 +38,7 @@ onUnmounted(() => {
 .scroll-top {
   position: fixed;
   right: 20px;
-  bottom: 24px;
+  bottom: 85px;
   z-index: 1300;
   width: 48px;
   height: 48px;
@@ -57,7 +57,6 @@ onUnmounted(() => {
 @media (max-width: 600px) {
   .scroll-top {
     right: 16px;
-    bottom: 18px;
     width: 44px;
     height: 44px;
   }

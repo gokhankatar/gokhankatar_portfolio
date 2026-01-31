@@ -30,11 +30,21 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "en",
       },
-      title: "Gokhan Katar | Web Technologies",
+      title: "Gokhan Katar | Full Stack Web Geliştirici",
       titleTemplate: "%s | Gokhan Katar",
       meta: [
         {
           charset: "utf-8",
+        },
+        {
+          name: "description",
+          content:
+            "Gokhan Katar portfolyosu. Nuxt ve Vue ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiriyorum. Projeler, yetenekler ve iletişim.",
+        },
+        {
+          name: "keywords",
+          content:
+            "Gokhan Katar, full stack web geliştirici, Nuxt geliştirici, Vue geliştirici, web developer, frontend, backend, portfolyo",
         },
         {
           name: "viewport",
@@ -51,6 +61,48 @@ export default defineNuxtConfig({
         {
           name: "msapplication-TileColor",
           content: "#D34A4C",
+        },
+        {
+          property: "og:title",
+          content: "Gokhan Katar | Full Stack Web Geliştirici",
+        },
+        {
+          property: "og:description",
+          content:
+            "Nuxt ve Vue ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiren full stack web geliştirici.",
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:url",
+          content: "https://gokhankatar.dev/",
+        },
+        {
+          property: "og:image",
+          content: "https://gokhankatar.dev/img/profile.png",
+        },
+        {
+          property: "og:locale",
+          content: "tr_TR",
+        },
+        {
+          name: "twitter:card",
+          content: "summary_large_image",
+        },
+        {
+          name: "twitter:title",
+          content: "Gokhan Katar | Full Stack Web Geliştirici",
+        },
+        {
+          name: "twitter:description",
+          content:
+            "Nuxt ve Vue ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiren full stack web geliştirici.",
+        },
+        {
+          name: "twitter:image",
+          content: "https://gokhankatar.dev/img/profile.png",
         },
       ],
       link: [
