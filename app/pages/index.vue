@@ -220,7 +220,7 @@ useHead({
     {
       name: "description",
       content:
-        "Gokhan Katar portfolyosu. Nuxt ve Vue ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiriyorum.",
+        "Portfolyoma Hoşgeldiniz. Ben Gökhan Katar. Nuxt ve Vue.js ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiriyorum. İşletmeler için kurumsal web siteleri, stok yönetimi, kâr–zarar takibi, yönetim panelleri ve kişiye özel web yazılım çözümleri sunuyorum. Projeler, teknik yetenekler ve iletişim bilgileri.",
     },
     {
       property: "og:title",

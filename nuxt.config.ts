@@ -38,8 +38,7 @@ export default defineNuxtConfig({
         },
         {
           name: "description",
-          content:
-            "Gokhan Katar portfolyosu. Nuxt ve Vue ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiriyorum. Projeler, yetenekler ve iletişim.",
+          content: "Portfolyoma Hoşgeldiniz. Ben Gökhan Katar. Nuxt ve Vue.js ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiriyorum. İşletmeler için kurumsal web siteleri, stok yönetimi, kâr–zarar takibi, yönetim panelleri ve kişiye özel web yazılım çözümleri sunuyorum. Projeler, teknik yetenekler ve iletişim bilgileri."
         },
         {
           name: "keywords",
@@ -112,9 +111,25 @@ export default defineNuxtConfig({
           href: "/favicon.ico",
         },
         {
+          rel: "icon",
+          type: "image/png",
+          sizes: "192x192",
+          href: "/img/profile.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "512x512",
+          href: "/img/profile.png",
+        },
+        {
           rel: "apple-touch-icon",
           sizes: "180x180",
           href: "/apple-touch-icon.png",
+        },
+        {
+          rel: "manifest",
+          href: "/site.webmanifest",
         },
         {
           rel: "stylesheet",
