@@ -11,8 +11,7 @@
         <v-col
           v-for="n in 4"
           :key="`project-skeleton-${n}`"
-          cols="12"
-          sm="6"
+          cols="6"
           lg="4"
           xl="3"
         >
@@ -25,16 +24,17 @@
       </div>
 
       <v-row v-else justify="center" align="stretch" :dense="display.smAndDown.value">
-        <v-col v-for="project in projects" :key="project.id" cols="12" sm="6" lg="4" xl="3">
+        <v-col v-for="project in projects" :key="project.id" cols="6" lg="4" xl="3">
           <v-card
             elevation="4"
             class="project-card h-100"
             hover
             :ripple="false"
-            :min-height="display.smAndDown.value ? 440 : undefined"
+            :min-height="display.smAndDown.value ? 180 : undefined"
+            :to="display.smAndDown.value ? `/projects/${getProjectSlug(project)}` : undefined"
           >
             <v-img
-              height="220"
+              :height="display.smAndDown.value ? '100%' : 220"
               :src="project.preview_img || ''"
               cover
               class="project-image bg-grey-lighten-3"
@@ -46,64 +46,68 @@
               </template>
             </v-img>
 
-            <div class="project-card__overlay d-flex flex-column flex-xl-row">
-              <v-btn
-                :to="`/projects/${getProjectSlug(project)}`"
-                variant="flat"
-                class="project-card__btn"
-                :ripple="false"
-                :size="display.xl.value ? 'large' : 'default'"
-                text="View Detail"
-                prepend-icon="mdi-eye-outline"
-              />
-              <v-btn
-                v-if="project.project_link"
-                :href="project.project_link"
-                target="_blank"
-                variant="outlined"
-                :size="display.xl.value ? 'large' : 'default'"
-                class="project-card__btn"
-                :ripple="false"
-                text="View Project"
-                append-icon="mdi-open-in-new"
-              />
-            </div>
-
-            <v-card-title class="text-caption text-lg-subtitle-2 text-xl-h6 font-weight-bold">
-              {{ project.project_name }}
-            </v-card-title>
-
-            <v-card-text>
-              <p class="text-caption text-xl-subtitle-2 mb-4">
-                {{
-                  display.xs.value
-                    ? truncateText(project.project_description, 60)
-                    : truncateText(project.project_description, 100)
-                }}
-              </p>
-              <div
-                v-if="getProjectTechnologies(project).length"
-                class="project-tech-preview"
-              >
-                <v-chip
-                  v-for="tech in getProjectTechnologies(project).slice(0, 3)"
-                  :key="tech"
-                  :size="display.xl.value ? 'small' : 'x-small'"
-                  variant="tonal"
-                  class="project-tech-chip"
-                  :text="tech"
+            <template v-if="!display.smAndDown.value">
+              <div class="project-card__overlay d-flex flex-column flex-xl-row">
+                <v-btn
+                  :to="`/projects/${getProjectSlug(project)}`"
+                  variant="flat"
+                  class="project-card__btn"
+                  :ripple="false"
+                  :size="display.xl.value ? 'large' : 'default'"
+                  text="View Detail"
+                  prepend-icon="mdi-eye-outline"
                 />
                 <v-btn
-                  v-if="getProjectTechnologies(project).length > 3"
-                  :to="`/projects/${getProjectSlug(project)}`"
-                  variant="text"
-                  size="small"
-                  class="project-tech-more"
-                  text="More"
+                  v-if="project.project_link"
+                  :href="project.project_link"
+                  target="_blank"
+                  variant="outlined"
+                  :size="display.xl.value ? 'large' : 'default'"
+                  class="project-card__btn"
                   :ripple="false"
+                  text="View Project"
+                  append-icon="mdi-open-in-new"
                 />
               </div>
-            </v-card-text>
+
+              <v-card-title
+                class="text-caption text-lg-subtitle-2 text-xl-h6 font-weight-bold"
+              >
+                {{ project.project_name }}
+              </v-card-title>
+
+              <v-card-text>
+                <p class="text-caption text-xl-subtitle-2 mb-4">
+                  {{
+                    display.xs.value
+                      ? truncateText(project.project_description, 60)
+                      : truncateText(project.project_description, 100)
+                  }}
+                </p>
+                <div
+                  v-if="getProjectTechnologies(project).length"
+                  class="project-tech-preview"
+                >
+                  <v-chip
+                    v-for="tech in getProjectTechnologies(project).slice(0, 3)"
+                    :key="tech"
+                    :size="display.xl.value ? 'small' : 'x-small'"
+                    variant="tonal"
+                    class="project-tech-chip"
+                    :text="tech"
+                  />
+                  <v-btn
+                    v-if="getProjectTechnologies(project).length > 3"
+                    :to="`/projects/${getProjectSlug(project)}`"
+                    variant="text"
+                    size="small"
+                    class="project-tech-more"
+                    text="More"
+                    :ripple="false"
+                  />
+                </div>
+              </v-card-text>
+            </template>
           </v-card>
         </v-col>
       </v-row>

@@ -21,9 +21,9 @@
           />
           <p class="hero-role">Full-Stack Web Developer</p>
           <div class="hero-badges">
-            <span class="hero-badge">Nuxt & Vue</span>
-            <span class="hero-badge">Firebase & Supabase</span>
-            <span class="hero-badge">UX-focused Delivery</span>
+            <span class="hero-badge">Nuxt & Vue & React</span>
+            <span class="hero-badge">Firebase & Supabase & MongoDB</span>
+            <span class="hero-badge">NodeJs & ExpressJs</span>
           </div>
           <p class="hero-summary text-caption text-sm-subtitle-2 text-lg-subtitle-1">
             {{
