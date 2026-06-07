@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { toProjectSlug } from "../../utils/projectSlug";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -32,17 +33,27 @@ export default defineEventHandler(async (event) => {
   }
 
   const projectRef = doc(firestore, "projects", projectId);
-  const projectSnap = await getDoc(projectRef);
+  let projectSnap = await getDoc(projectRef);
 
   if (!projectSnap.exists()) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: "Project not found.",
+    const allProjects = await getDocs(collection(firestore, "projects"));
+    const matchedDoc = allProjects.docs.find((entry) => {
+      const name = entry.data().project_name as string | undefined;
+      return name ? toProjectSlug(name) === projectId : false;
     });
+
+    if (!matchedDoc) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Project not found.",
+      });
+    }
+
+    projectSnap = matchedDoc;
   }
 
   return {
-    id: projectSnap.id,
     ...projectSnap.data(),
+    id: projectSnap.id,
   };
 });

@@ -1,100 +1,142 @@
 <template>
-  <v-responsive :height="display.xs.value ? 100 : 150" />
-  <v-sheet class="project-detail">
-    <v-container>
-      <div v-if="pending" class="text-center py-12">
-        <v-progress-circular indeterminate color="error" size="64" />
-      </div>
+  <div class="project-detail-page">
+    <div v-if="pending" class="project-detail-page__state">
+      <v-progress-circular indeterminate color="error" size="64" />
+    </div>
 
-      <v-alert v-else-if="error" type="error" variant="tonal" class="mt-6">
-        Failed to load project.
-      </v-alert>
+    <v-alert v-else-if="error" type="error" variant="tonal" class="ma-6">
+      Failed to load project.
+    </v-alert>
 
-      <div v-else-if="project">
-        <v-btn
-          to="/#projects"
-          variant="text"
-          class="project-back"
-          text="Back to projects"
-          prepend-icon="mdi-arrow-left"
-          :ripple="false"
-        />
+    <template v-else-if="project">
+      <section class="project-hero">
+        <v-img
+          :src="project.preview_img || ''"
+          cover
+          class="project-hero__bg"
+        >
+          <template #placeholder>
+            <div class="project-hero__placeholder" />
+          </template>
+        </v-img>
 
-        <div class="project-detail__header">
-          <p class="section-title">{{ project.project_name }}</p>
-          <div class="project-detail__actions">
-            <v-btn
-              v-if="project.project_link"
-              :href="project.project_link"
-              target="_blank"
-              variant="flat"
-              class="hero-btn hero-btn-primary"
-              text="Visit Website"
-              append-icon="mdi-open-in-new"
-              :ripple="false"
-            />
-          </div>
+        <div class="project-hero__shade project-hero__shade--left" />
+        <div class="project-hero__shade project-hero__shade--bottom" />
+
+        <div class="project-hero__backbar">
+          <v-container class="project-hero__backbar-inner">
+            <NuxtLink to="/#projects" class="project-hero__back">
+              <span class="project-hero__back-icon">
+                <v-icon icon="mdi-arrow-left" size="18" />
+              </span>
+              <span>Back to projects</span>
+            </NuxtLink>
+          </v-container>
         </div>
 
-        <div class="project-detail__media">
-          <v-img
-            :src="project.preview_img || ''"
-            :height="display.mdAndUp.value ? 420 : 260"
-            cover
-            class="project-detail__image"
-          >
-            <template #placeholder>
-              <div class="d-flex align-center justify-center fill-height">
-                <v-progress-circular indeterminate color="grey" />
-              </div>
-            </template>
-          </v-img>
-        </div>
+        <div class="project-hero__content">
+          <v-container class="project-hero__container">
+            <span class="project-hero__badge">Featured Project</span>
+            <h1 class="project-hero__title">{{ project.project_name }}</h1>
+            <p class="project-hero__lede">
+              {{ heroDescription }}
+            </p>
 
+            <div v-if="heroTech.length" class="project-hero__tags">
+              <span v-for="tech in heroTech" :key="tech" class="project-hero__tag">
+                {{ tech }}
+              </span>
+            </div>
+
+            <div class="project-hero__actions">
+              <v-btn
+                v-if="project.project_link"
+                :href="project.project_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="flat"
+                class="hero-btn hero-btn-primary project-hero__btn"
+                text="Visit Website"
+                prepend-icon="mdi-play"
+                :ripple="false"
+              />
+              <v-btn
+                href="#project-details"
+                variant="outlined"
+                class="hero-btn hero-btn-secondary project-hero__btn"
+                text="More Info"
+                prepend-icon="mdi-information-outline"
+                :ripple="false"
+              />
+            </div>
+          </v-container>
+        </div>
+      </section>
+
+      <v-container class="project-detail__content">
         <v-row class="project-detail__grid" align="start">
           <v-col cols="12" md="7">
-            <div id="project-details" class="project-detail__panel project-detail__body">
-              <div
-                v-if="project.project_description_raw_data"
-                v-html="project.project_description_raw_data"
-              />
-              <div v-else>
-                <p class="text-subtitle-1">
-                  {{ project.project_description }}
-                </p>
+            <div id="project-details" class="project-detail__panel project-detail__panel--about">
+              <div class="project-detail__panel-head">
+                <div class="project-detail__panel-icon">
+                  <v-icon icon="mdi-text-box-outline" size="20" />
+                </div>
+                <div>
+                  <p class="project-detail__label">About this project</p>
+                  <p class="project-detail__panel-sub">Overview & implementation</p>
+                </div>
+              </div>
+              <div class="project-detail__panel-body project-detail__body">
+                <div
+                  v-if="project.project_description_raw_data"
+                  v-html="project.project_description_raw_data"
+                />
+                <div v-else>
+                  <p class="project-detail__text">
+                    {{ project.project_description }}
+                  </p>
+                </div>
               </div>
             </div>
           </v-col>
           <v-col cols="12" md="5">
-            <div class="project-detail__panel">
-              <p class="project-detail__label">Tech Stack</p>
-              <div v-if="techGroups.length" class="project-detail__tech">
-                <div
-                  v-for="group in techGroups"
-                  :key="group.category"
-                  class="project-tech-group"
-                >
-                  <p class="project-tech-title">{{ group.category }}</p>
-                  <div class="project-tech-chips">
-                    <v-chip
-                      v-for="item in group.items"
-                      :key="item"
-                      size="small"
-                      variant="tonal"
-                      class="project-tech-chip"
-                    >
-                      {{ item }}
-                    </v-chip>
-                  </div>
+            <div class="project-detail__panel project-detail__panel--tech">
+              <div class="project-detail__panel-head">
+                <div class="project-detail__panel-icon project-detail__panel-icon--tech">
+                  <v-icon icon="mdi-code-tags" size="20" />
+                </div>
+                <div>
+                  <p class="project-detail__label">Tech Stack</p>
+                  <p class="project-detail__panel-sub">Tools & technologies used</p>
                 </div>
               </div>
-              <p v-else class="project-detail__empty">No technologies listed.</p>
+              <div class="project-detail__panel-body">
+                <div v-if="techGroups.length" class="project-detail__tech">
+                  <div
+                    v-for="group in techGroups"
+                    :key="group.category"
+                    class="project-tech-group"
+                  >
+                    <p class="project-tech-title">{{ group.category }}</p>
+                    <div class="project-tech-chips">
+                      <span
+                        v-for="item in group.items"
+                        :key="item"
+                        class="project-detail__chip"
+                      >
+                        {{ item }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p v-else class="project-detail__empty">No technologies listed.</p>
+              </div>
             </div>
           </v-col>
         </v-row>
-      </div>
-    </v-container>
-  </v-sheet>
+      </v-container>
+    </template>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -104,8 +146,10 @@ import type {
   UsedTechnologies,
 } from "~/composables/core/interfaces";
 import { useDisplay } from "vuetify/lib/composables/display.mjs";
+import { useText } from "~/composables/data/useText";
 
 const display = useDisplay();
+const { truncateText } = useText();
 const route = useRoute();
 const projectId = route.params._project as string;
 
@@ -122,6 +166,16 @@ const techGroups = computed<UsedTechnologyGroup[]>(() => {
   return (tech as UsedTechnologyGroup[]) ?? [];
 });
 
+const heroTech = computed(() =>
+  techGroups.value.flatMap((group) => group.items).slice(0, 5)
+);
+
+const heroDescription = computed(() => {
+  const text = project.value?.project_description || "";
+  const limit = display.mdAndUp.value ? 220 : 140;
+  return truncateText(text, limit);
+});
+
 useHead(() => ({
   title: project.value?.project_name || "Project",
   meta: [
@@ -131,156 +185,4 @@ useHead(() => ({
     },
   ],
 }));
-
 </script>
-
-<style scoped>
-.project-detail {
-  padding-top: 24px;
-  padding-bottom: 64px;
-  background: radial-gradient(
-      80% 120% at 20% 10%,
-      rgba(240, 106, 108, 0.12),
-      transparent 55%
-    ),
-    radial-gradient(70% 120% at 80% 0%, rgba(88, 137, 255, 0.12), transparent 55%);
-}
-
-.v-theme--light .project-detail {
-  background: radial-gradient(
-      70% 120% at 20% 10%,
-      rgba(255, 196, 198, 0.6),
-      transparent 55%
-    ),
-    radial-gradient(70% 120% at 80% 0%, rgba(186, 210, 255, 0.55), transparent 55%);
-}
-
-.project-back {
-  text-transform: none;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-.project-detail__grid {
-  margin-top: 24px;
-}
-
-.project-detail__header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.project-detail__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.project-detail__media {
-  max-width: 980px;
-  margin: 18px auto 0;
-}
-
-.project-detail__image {
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.22);
-}
-
-.project-detail__label {
-  margin: 0 0 6px;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.v-theme--light .project-detail__label {
-  color: rgba(31, 41, 55, 0.6);
-}
-
-.project-detail__lede {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.v-theme--light .project-detail__lede {
-  color: rgba(31, 41, 55, 0.7);
-}
-
-.project-detail__tech {
-  display: grid;
-  gap: 10px;
-}
-
-.project-detail__panel {
-  border-radius: 20px;
-  padding: 20px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(15, 23, 42, 0.08));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
-}
-
-.v-theme--light .project-detail__panel {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(226, 232, 240, 0.6));
-  border-color: rgba(15, 23, 42, 0.12);
-  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
-}
-
-.project-tech-group {
-  display: grid;
-  gap: 6px;
-}
-
-.project-tech-title {
-  margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.v-theme--light .project-tech-title {
-  color: rgba(31, 41, 55, 0.6);
-}
-
-.project-tech-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.project-tech-chip {
-  font-size: 0.75rem;
-  letter-spacing: 0.01em;
-}
-
-.v-theme--light .project-tech-chip {
-  color: rgba(15, 23, 42, 0.78);
-}
-
-.project-detail__empty {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.v-theme--light .project-detail__empty {
-  color: rgba(31, 41, 55, 0.65);
-}
-
-.project-detail__body p {
-  margin: 0 0 12px;
-  line-height: 1.8;
-}
-
-.v-theme--light .project-detail__body,
-.v-theme--light .project-detail__body p {
-  color: rgba(15, 23, 42, 0.78);
-}
-</style>

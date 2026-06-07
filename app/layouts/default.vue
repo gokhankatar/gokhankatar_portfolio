@@ -3,7 +3,7 @@
   <template v-else>
     <div class="init-container">
       <AppHeader />
-      <NuxtPage />
+      <slot />
       <AppFooter v-if="showFooter" />
       <ScrollToTop />
     </div>

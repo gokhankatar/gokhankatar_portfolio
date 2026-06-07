@@ -1,13 +1,16 @@
 <template>
   <v-app-bar
-    :elevation="isScrolled ? 4 : 2"
+    :elevation="0"
     fixed
-    :color="$vuetify.theme.current.dark ? 'grey-darken-4' : 'white'"
-    :style="
-      $vuetify.theme.current.dark
-        ? 'backdrop-filter: blur(10px); background: rgba(18, 18, 18, 0.95) !important;'
-        : 'backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95) !important;'
-    "
+    flat
+    color="transparent"
+    :class="[
+      'app-header',
+      {
+        'app-header--dark': isDark,
+        'app-header--scrolled': isScrolled,
+      },
+    ]"
   >
     <v-container fluid class="app-header__container">
       <v-row align="center" justify="space-between" no-gutters class="app-header__row">
@@ -21,31 +24,22 @@
         </v-col>
 
         <v-col cols="auto" class="d-none d-md-flex app-header__nav">
-          <v-btn
-            v-for="item in navItems"
-            :key="item.href"
-            :href="item.href"
-            variant="text"
-            class="text-none"
-            color="grey-darken-1"
-          >
-            {{ item.label }}
-          </v-btn>
+          <nav class="app-header__nav-pill" aria-label="Main navigation">
+            <v-btn
+              v-for="item in navItems"
+              :key="item.href"
+              :href="item.href"
+              variant="text"
+              class="app-header__link"
+              :class="{ 'app-header__link--active': activeSection === item.href }"
+              :ripple="false"
+              :prepend-icon="item.icon"
+              :text="item.label"
+            />
+          </nav>
         </v-col>
 
         <v-col cols="auto" class="d-flex align-center ga-2 app-header__actions">
-          <v-btn
-            href="/cv.pdf"
-            target="_blank"
-            download="Gokhan_Katar_CV.pdf"
-            variant="tonal"
-            class="app-header__cv d-none d-md-inline-flex"
-            :ripple="false"
-            aria-label="Download CV"
-          >
-            <v-icon size="18">mdi-download</v-icon>
-            Download CV
-          </v-btn>
           <button
             type="button"
             class="theme-toggle"
@@ -86,22 +80,12 @@
           variant="text"
           :size="display.xs.value ? 'large' : 'x-large'"
           class="mobile-menu__link"
+          :class="{ 'mobile-menu__link--active': activeSection === item.href }"
           :ripple="false"
           @click="drawer = false"
           :prepend-icon="item.icon"
           :text="item.label"
         />
-        <v-btn
-          href="/cv.pdf"
-          target="_blank"
-          download="Gokhan_Katar_CV.pdf"
-          variant="tonal"
-          class="mobile-menu__cta"
-          :ripple="false"
-        >
-          <v-icon size="18">mdi-download</v-icon>
-          Download CV
-        </v-btn>
       </div>
 
         <div class="mobile-menu__footer">
@@ -178,13 +162,27 @@ const display = useDisplay();
 const navItems = [
   { href: "#home", label: "Home", icon: "mdi-home-outline" },
   { href: "#about", label: "About", icon: "mdi-account-outline" },
-  { href: "#skills", label: "Skills", icon: "mdi-star-outline" },
+  { href: "#skills", label: "Skills", icon: "mdi-code-tags" },
   { href: "#projects", label: "Projects", icon: "mdi-briefcase-outline" },
   { href: "#contact", label: "Contact", icon: "mdi-email-outline" },
 ];
 
+const activeSection = ref("#home");
+
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
+
+  const scrollPos = window.scrollY + 120;
+  let current = navItems[0].href;
+
+  for (const item of navItems) {
+    const el = document.querySelector(item.href);
+    if (el instanceof HTMLElement && el.offsetTop <= scrollPos) {
+      current = item.href;
+    }
+  }
+
+  activeSection.value = current;
 };
 
 const handleToggleTheme = () => {
@@ -193,7 +191,8 @@ const handleToggleTheme = () => {
 
 onMounted(() => {
   initTheme();
-  window.addEventListener("scroll", handleScroll);
+  handleScroll();
+  window.addEventListener("scroll", handleScroll, { passive: true });
 });
 
 onUnmounted(() => {
@@ -202,10 +201,31 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.v-app-bar {
-  transition: all 0.3s ease;
+.app-header {
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   width: 100%;
   z-index: 1000;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.88) !important;
+  --v-theme-surface: transparent;
+}
+
+.app-header--dark {
+  border-bottom-color: rgba(143, 240, 182, 0.1);
+  background: rgba(8, 16, 14, 0.82) !important;
+}
+
+.app-header--scrolled {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.app-header--dark.app-header--scrolled {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  border-bottom-color: rgba(143, 240, 182, 0.18);
+  background: rgba(8, 16, 14, 0.95) !important;
 }
 
 .app-header__container {
@@ -222,28 +242,75 @@ onUnmounted(() => {
   min-width: 0;
 }
 
+.app-header__nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.app-header--dark .app-header__nav-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.app-header__link {
+  border-radius: 999px !important;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding-inline: 12px !important;
+  min-height: 36px;
+  color: rgba(15, 23, 42, 0.65) !important;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.app-header--dark .app-header__link {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.app-header__link:hover {
+  background: rgba(211, 74, 76, 0.1) !important;
+  color: #d34a4c !important;
+  transform: translateY(-1px);
+}
+
+.app-header--dark .app-header__link:hover {
+  background: rgba(143, 240, 182, 0.12) !important;
+  color: #8ff0b6 !important;
+}
+
+.app-header__link--active {
+  background: rgba(211, 74, 76, 0.12) !important;
+  color: #d34a4c !important;
+  font-weight: 600;
+}
+
+.app-header--dark .app-header__link--active {
+  background: rgba(143, 240, 182, 0.16) !important;
+  color: #8ff0b6 !important;
+}
+
+.app-header__link :deep(.v-btn__prepend) {
+  margin-inline-end: 4px;
+}
+
+.app-header__link :deep(.v-icon) {
+  font-size: 16px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.app-header__link:hover :deep(.v-icon),
+.app-header__link--active :deep(.v-icon) {
+  opacity: 1;
+}
+
 .app-header__actions {
   margin-left: auto;
   flex-wrap: nowrap;
-}
-
-.app-header__cv {
-  border-radius: 999px;
-  text-transform: none;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  padding-inline: 16px;
-  gap: 8px;
-  color: #ffffff;
-  background: linear-gradient(135deg, #ff7a7a 0%, #ff5d8f 45%, #7a7dff 100%);
-  border: none;
-  box-shadow: 0 10px 22px rgba(255, 93, 143, 0.35);
-}
-
-.app-header__cv:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(135deg, #ff7a7a 0%, #ff4f88 45%, #6d7bff 100%);
-  box-shadow: 0 14px 28px rgba(255, 93, 143, 0.45);
 }
 
 .app-header__brand {
@@ -254,7 +321,7 @@ onUnmounted(() => {
   letter-spacing: 0.02em;
 }
 
-:deep(.v-theme--dark) .app-header__brand {
+.app-header--dark .app-header__brand {
   background: linear-gradient(120deg, #8ff0b6, #7ad7c4, #9ad0ff);
   -webkit-background-clip: text;
   background-clip: text;
@@ -384,27 +451,13 @@ onUnmounted(() => {
   background: rgba(240, 106, 108, 0.12);
 }
 
-.mobile-menu__cta {
-  margin-top: 4px;
-  text-transform: none;
-  border-radius: 14px;
-  justify-content: center;
-  gap: 10px;
-  color: #ffffff;
-  background: linear-gradient(135deg, #ff7a7a 0%, #ff5d8f 45%, #7a7dff 100%);
-  border: none;
-  box-shadow: 0 10px 22px rgba(255, 93, 143, 0.35);
+.mobile-menu__link--active {
+  background: rgba(143, 240, 182, 0.14);
+  font-weight: 600;
 }
 
-.v-theme--light .mobile-menu__cta {
-  color: #ffffff;
-  background: linear-gradient(135deg, #ff7a7a 0%, #ff5d8f 45%, #7a7dff 100%);
-}
-
-.mobile-menu__cta:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(135deg, #ff7a7a 0%, #ff4f88 45%, #6d7bff 100%);
-  box-shadow: 0 14px 28px rgba(255, 93, 143, 0.45);
+:deep(.v-theme--light) .mobile-menu__link--active {
+  background: rgba(211, 74, 76, 0.1);
 }
 
 .v-theme--light .mobile-menu {

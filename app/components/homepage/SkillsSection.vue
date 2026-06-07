@@ -65,7 +65,7 @@
           </div>
 
           <div v-else-if="skillsError" class="text-center py-8">
-            <v-alert type="error" variant="tonal">{{ skillsError }}</v-alert>
+            <v-alert type="error" variant="tonal">Failed to load skills.</v-alert>
           </div>
 
           <v-row v-else class="justify-center skills-grid">
@@ -78,38 +78,31 @@
               lg="1"
               class="d-flex justify-center"
             >
-              <v-tooltip location="top">
-                <template #activator="{ props }">
-                  <div v-bind="props" :class="['skill-card', `skill-card-${index}`]">
-                    <div class="skill-icon" :class="getSkillCategoryClass(skill.field)">
-                      <img
-                        v-if="skill.skill_logo"
-                        :src="skill.skill_logo"
-                        :alt="skill.skill_name"
-                        :width="display.lgAndUp ? 52 : 32"
-                        :height="display.lgAndUp ? 52 : 32"
-                        class="skill-logo"
-                        @error="handleImageError"
-                      />
-                      <div v-else class="skill-name-icon">
-                        {{ skill.skill_name?.charAt(0) || "?" }}
-                      </div>
-                    </div>
-                    <p
-                      class="skill-label text-caption"
-                      :class="getSkillCategoryClass(skill.field)"
-                    >
-                      {{ skill.skill_name }}
-                    </p>
-                  </div>
-                </template>
-                <div class="text-subtitle-2">
-                  <div class="font-weight-medium">{{ skill.skill_name }}</div>
-                  <div class="text-caption">
-                    {{ (skill.field || []).map(formatField).join(" · ") }}
+              <div
+                :title="skillTooltip(skill)"
+                :class="['skill-card', `skill-card-${index}`]"
+              >
+                <div class="skill-icon" :class="getSkillCategoryClass(skill.field)">
+                  <img
+                    v-if="skill.skill_logo && !failedLogos.has(skill.id || skill.skill_name)"
+                    :src="skill.skill_logo"
+                    :alt="skill.skill_name"
+                    :width="display.lgAndUp ? 52 : 32"
+                    :height="display.lgAndUp ? 52 : 32"
+                    class="skill-logo"
+                    @error="handleImageError(skill)"
+                  />
+                  <div v-else class="skill-name-icon">
+                    {{ skill.skill_name?.charAt(0) || "?" }}
                   </div>
                 </div>
-              </v-tooltip>
+                <p
+                  class="skill-label text-caption"
+                  :class="getSkillCategoryClass(skill.field)"
+                >
+                  {{ skill.skill_name }}
+                </p>
+              </div>
             </v-col>
           </v-row>
         </template>
@@ -127,11 +120,10 @@
 import { computed, ref } from "vue";
 import { useDisplay } from "vuetify/lib/composables/display.mjs";
 import type { Skill } from "~/composables/core/interfaces";
-import { useText } from "~/composables/data/useText";
 
 const display = useDisplay();
 const selectedCategory = ref("all");
-const { formatField } = useText();
+const failedLogos = ref<Set<string>>(new Set());
 
 const { data: skills, pending: skillsLoading, error: skillsError } = await useFetch<
   Skill[]
@@ -139,12 +131,38 @@ const { data: skills, pending: skillsLoading, error: skillsError } = await useFe
   default: () => [],
 });
 
+const normalizeFields = (field: unknown): string[] => {
+  if (Array.isArray(field)) {
+    return field.flatMap((item) => normalizeFields(item));
+  }
+  if (typeof field === "string") {
+    const trimmed = field.trim();
+    return trimmed ? [trimmed] : [];
+  }
+  return [];
+};
+
+const formatSkillField = (field: unknown) => {
+  if (typeof field !== "string" || !field) return "";
+  return field.replace(/_/g, " ");
+};
+
+const getSkillFieldsLabel = (field: unknown) => {
+  const labels = normalizeFields(field).map(formatSkillField).filter(Boolean);
+  return labels.length ? labels.join(" · ") : "General";
+};
+
+const skillTooltip = (skill: Skill) => {
+  const fields = getSkillFieldsLabel(skill.field);
+  return `${skill.skill_name || "Skill"} — ${fields}`;
+};
+
 const filteredSkills = computed(() => {
   if (selectedCategory.value === "all") {
     return skills.value;
   }
   return skills.value.filter((skill) =>
-    (skill.field || []).includes(selectedCategory.value)
+    normalizeFields(skill.field).includes(selectedCategory.value)
   );
 });
 
@@ -152,20 +170,14 @@ const handleCategoryChange = (value: string | null) => {
   selectedCategory.value = value || "all";
 };
 
-const getSkillCategoryClass = (fields?: string[]) => {
-  const field = fields?.[0] || "tools";
+const getSkillCategoryClass = (fields?: Skill["field"] | unknown) => {
+  const field = normalizeFields(fields)[0] || "tools";
   return `skill-icon--${field}`;
 };
 
-const handleImageError = (event: Event) => {
-  const img = event.target as HTMLImageElement;
-  img.style.display = "none";
-  const parent = img.parentElement;
-  if (parent) {
-    const fallback = document.createElement("div");
-    fallback.className = "skill-name-icon";
-    fallback.textContent = "?";
-    parent.appendChild(fallback);
-  }
+const handleImageError = (skill: Skill) => {
+  const key = skill.id || skill.skill_name;
+  if (!key || failedLogos.value.has(key)) return;
+  failedLogos.value = new Set([...failedLogos.value, key]);
 };
 </script>

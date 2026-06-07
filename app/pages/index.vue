@@ -43,6 +43,20 @@
             />
 
             <v-btn
+              href="/cv.pdf"
+              target="_blank"
+              download="Gokhan_Katar_CV.pdf"
+              :size="display.xl.value ? 'large' : 'default'"
+              variant="flat"
+              class="hero-btn hero-btn-cv"
+              :ripple="false"
+              aria-label="Download CV"
+            >
+              <v-icon icon="mdi-file-download-outline" size="20" />
+              Download CV
+            </v-btn>
+
+            <v-btn
               href="#contact"
               :size="display.xl.value ? 'large' : 'default'"
               variant="outlined"

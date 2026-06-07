@@ -1,83 +1,86 @@
 <template>
   <v-sheet id="contact" class="bg-transparent contact-section">
     <v-container>
-      <p class="section-title">Contact Me</p>
+      <p
+        class="text-center text-subtitle-1 text-md-h6 text-lg-h5 text-xl-h4 font-weight-bold mb-3"
+        style="letter-spacing: 1px !important"
+      >
+        Contact Me
+      </p>
       <p class="section-subtitle contact-subtitle">
         If you'd like to work on a project together or just say hello, feel free to
         reach out!
       </p>
 
-      <v-row class="contact-grid" align="stretch" :dense="display.smAndDown.value">
-        <v-col cols="12" lg="5">
-          <div class="contact-info-grid">
-            <v-card
+      <v-row class="contact-grid" align="stretch">
+        <v-col cols="12" lg="5" class="contact-col">
+          <div class="contact-info-list">
+            <a
               v-for="item in contactCards"
               :key="item.label"
               class="contact-card"
-              variant="tonal"
-              :ripple="false"
               :href="item.href"
               :target="item.target"
+              :rel="item.target ? 'noopener noreferrer' : undefined"
             >
-              <div class="contact-card__icon">
-                <v-icon :icon="item.icon" :size="display.smAndDown.value ? 18 : 22" />
-              </div>
+              <v-icon :icon="item.icon" size="20" class="contact-card__icon" />
               <div class="contact-card__content">
-                <p class="contact-card-title text-subtitle-2 text-xl-subtitle-1">
-                  {{ item.label }}
-                </p>
-                <p class="contact-card-value text-caption text-lg-subtitle-2 text-xl-subtitle-1">
-                  {{ item.value }}
-                </p>
+                <span class="contact-card-title">{{ item.label }}</span>
+                <span class="contact-card-value">{{ item.value }}</span>
               </div>
-            </v-card>
+            </a>
           </div>
         </v-col>
 
-        <v-col cols="12" lg="7">
+        <v-col cols="12" lg="7" class="contact-col">
           <div class="contact-form-card">
-            <div class="contact-form-header d-flex justify-space-between align-center">
-              <div>
-                <p class="contact-card-title">Send a message</p>
-                <p class="contact-card-value">I usually respond within 24 hours.</p>
+            <div class="contact-form-header">
+              <div class="contact-form-header__badge">
+                <v-icon icon="mdi-send" size="20" />
               </div>
-              <v-icon icon="mdi-send" size="22" />
+              <div>
+                <p class="contact-form-title">Send a message</p>
+                <p class="contact-form-subtitle">I usually respond within 24 hours.</p>
+              </div>
             </div>
-            <v-form @submit.prevent="handleSubmit" ref="contactFormRef">
+
+            <v-form class="contact-form" @submit.prevent="handleSubmit" ref="contactFormRef">
               <v-alert
                 v-if="submitSuccess"
                 type="success"
                 variant="tonal"
-                class="mb-3"
+                class="contact-form__alert"
                 text="Message sent successfully."
               />
               <v-alert
                 v-if="submitError"
                 type="error"
                 variant="tonal"
-                class="mb-3"
+                class="contact-form__alert"
                 :text="submitError"
               />
+
               <v-text-field
                 v-model="form.name"
                 label="Your Name"
                 required
-                prepend-inner-icon="mdi-account"
+                prepend-inner-icon="mdi-account-outline"
                 variant="outlined"
                 hide-details="auto"
-                :density="display.xl.value ? 'default' : 'compact'"
+                class="contact-form__field"
+                :density="fieldDensity"
                 :rules="rules.name"
               />
               <v-text-field
                 v-model="form.email"
                 label="Email"
                 type="email"
-                prepend-inner-icon="mdi-email"
+                prepend-inner-icon="mdi-email-outline"
                 required
-                class="my-2 my-xl-4"
                 variant="outlined"
                 hide-details="auto"
-                :density="display.xl.value ? 'default' : 'compact'"
+                class="contact-form__field"
+                :density="fieldDensity"
                 :rules="rules.email"
               />
               <v-textarea
@@ -86,29 +89,31 @@
                 required
                 variant="outlined"
                 rows="5"
-                prepend-inner-icon="mdi-message"
+                prepend-inner-icon="mdi-message-outline"
                 hide-details="auto"
                 counter
                 max-length="300"
-                placeholder="I want to build a website for my business"
+                placeholder="Tell me about your project..."
                 no-resize
-                :density="display.xl.value ? 'default' : 'compact'"
+                class="contact-form__field"
+                :density="fieldDensity"
                 :rules="rules.message"
               />
 
-              <v-btn
-                type="submit"
-                color="error"
-                :size="display.xl.value ? 'default' : 'small'"
-                variant="flat"
-                :block="display.smAndDown.value"
-                class="text-none"
-                :ripple="false"
-                :loading="isSending"
-                :disabled="isSending"
-                text="Send"
-                prepend-icon="mdi-check"
-              />
+              <div class="contact-form__actions">
+                <v-btn
+                  type="submit"
+                  :size="submitBtnSize"
+                  variant="flat"
+                  :block="display.smAndDown.value"
+                  class="contact-form__submit"
+                  :ripple="false"
+                  :loading="isSending"
+                  :disabled="isSending"
+                  text="Send Message"
+                  prepend-icon="mdi-send"
+                />
+              </div>
             </v-form>
           </div>
         </v-col>
@@ -118,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { VForm } from "vuetify/components";
 import { useDisplay } from "vuetify/lib/composables/display.mjs";
 import { contactCards } from "~/utils/contentData";
@@ -128,6 +133,9 @@ const contactFormRef = ref<InstanceType<typeof VForm> | null>(null);
 const isSending = ref(false);
 const submitError = ref("");
 const submitSuccess = ref(false);
+
+const fieldDensity = computed(() => (display.xl.value ? "comfortable" : "compact"));
+const submitBtnSize = computed(() => (display.xl.value ? "large" : "default"));
 
 const form = ref({
   name: "",
@@ -192,7 +200,3 @@ const handleSubmit = async () => {
   }
 };
 </script>
-
-<style scoped>
-@import url("~/assets/css/main.css");
-</style>

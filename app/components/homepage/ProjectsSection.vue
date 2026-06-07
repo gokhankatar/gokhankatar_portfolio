@@ -26,88 +26,78 @@
       <v-row v-else justify="center" align="stretch" :dense="display.smAndDown.value">
         <v-col v-for="project in projects" :key="project.id" cols="6" lg="4" xl="3">
           <v-card
-            elevation="4"
+            elevation="0"
             class="project-card h-100"
-            hover
             :ripple="false"
             :min-height="display.smAndDown.value ? 180 : undefined"
-            :to="display.smAndDown.value ? `/projects/${getProjectSlug(project)}` : undefined"
+            role="link"
+            tabindex="0"
+            @click="goToProject(project)"
+            @keydown.enter="goToProject(project)"
           >
-            <v-img
-              :height="display.smAndDown.value ? '100%' : 220"
-              :src="project.preview_img || ''"
-              cover
-              class="project-image bg-grey-lighten-3"
-            >
-              <template #placeholder>
-                <div class="d-flex align-center justify-center fill-height">
-                  <v-progress-circular indeterminate color="grey" />
-                </div>
-              </template>
-            </v-img>
-
-            <template v-if="!display.smAndDown.value">
-              <div class="project-card__overlay d-flex flex-column flex-xl-row">
-                <v-btn
-                  :to="`/projects/${getProjectSlug(project)}`"
-                  variant="flat"
-                  class="project-card__btn"
-                  :ripple="false"
-                  :size="display.xl.value ? 'large' : 'default'"
-                  text="View Detail"
-                  prepend-icon="mdi-eye-outline"
-                />
-                <v-btn
-                  v-if="project.project_link"
-                  :href="project.project_link"
-                  target="_blank"
-                  variant="outlined"
-                  :size="display.xl.value ? 'large' : 'default'"
-                  class="project-card__btn"
-                  :ripple="false"
-                  text="View Project"
-                  append-icon="mdi-open-in-new"
-                />
-              </div>
-
-              <v-card-title
-                class="text-caption text-lg-subtitle-2 text-xl-h6 font-weight-bold"
+            <div class="project-card__media">
+              <v-img
+                :height="display.smAndDown.value ? '100%' : 200"
+                :src="project.preview_img || ''"
+                cover
+                class="project-card__image bg-grey-lighten-3"
               >
-                {{ project.project_name }}
-              </v-card-title>
+                <template #placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular indeterminate color="grey" />
+                  </div>
+                </template>
+              </v-img>
 
-              <v-card-text>
-                <p class="text-caption text-xl-subtitle-2 mb-4">
-                  {{
-                    display.xs.value
-                      ? truncateText(project.project_description, 60)
-                      : truncateText(project.project_description, 100)
-                  }}
-                </p>
+              <div v-if="!display.smAndDown.value" class="project-card__overlay">
+                <span class="project-card__btn project-card__btn--primary">
+                  <v-icon icon="mdi-eye-outline" size="18" />
+                  View Detail
+                </span>
+                <button
+                  v-if="project.project_link"
+                  type="button"
+                  class="project-card__btn project-card__btn--ghost"
+                  @click.stop="openExternalLink(project.project_link)"
+                >
+                  Live Site
+                  <v-icon icon="mdi-open-in-new" size="16" />
+                </button>
+              </div>
+            </div>
+
+            <div v-if="!display.smAndDown.value" class="project-card__body">
+              <h3 class="project-card__title">{{ project.project_name }}</h3>
+              <p class="project-card__desc">
+                {{ truncateText(project.project_description, display.xs.value ? 60 : 90) }}
+              </p>
+
+              <div class="project-card__footer">
                 <div
                   v-if="getProjectTechnologies(project).length"
-                  class="project-tech-preview"
+                  class="project-card__tags"
                 >
-                  <v-chip
+                  <span
                     v-for="tech in getProjectTechnologies(project).slice(0, 3)"
                     :key="tech"
-                    :size="display.xl.value ? 'small' : 'x-small'"
-                    variant="tonal"
-                    class="project-tech-chip"
-                    :text="tech"
-                  />
-                  <v-btn
+                    class="project-card__tag"
+                  >
+                    {{ tech }}
+                  </span>
+                  <span
                     v-if="getProjectTechnologies(project).length > 3"
-                    :to="`/projects/${getProjectSlug(project)}`"
-                    variant="text"
-                    size="small"
-                    class="project-tech-more"
-                    text="More"
-                    :ripple="false"
-                  />
+                    class="project-card__tag project-card__tag--more"
+                  >
+                    +{{ getProjectTechnologies(project).length - 3 }}
+                  </span>
                 </div>
-              </v-card-text>
-            </template>
+
+                <span class="project-card__link">
+                  Details
+                  <v-icon icon="mdi-arrow-right" size="16" />
+                </span>
+              </div>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -122,6 +112,7 @@ import { useProjectUtils } from "~/composables/data/useProjectUtils";
 import { useText } from "~/composables/data/useText";
 
 const display = useDisplay();
+const router = useRouter();
 const { truncateText } = useText();
 const { getProjectSlug, getProjectTechnologies } = useProjectUtils();
 
@@ -130,4 +121,14 @@ const { data: projects, pending: projectsLoading, error: projectsError } = await
 >("/api/projects", {
   default: () => [],
 });
+
+const getProjectPath = (project: Project) => `/projects/${getProjectSlug(project)}`;
+
+const goToProject = (project: Project) => {
+  router.push(getProjectPath(project));
+};
+
+const openExternalLink = (url: string) => {
+  window.open(url, "_blank", "noopener,noreferrer");
+};
 </script>

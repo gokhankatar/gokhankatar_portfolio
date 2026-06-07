@@ -27,8 +27,20 @@ export default defineEventHandler(async () => {
   const q = query(skillsRef, orderBy("order", "asc"));
   const querySnapshot = await getDocs(q);
 
-  return querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  return querySnapshot.docs.map((doc) => {
+    const data = doc.data();
+    const field = data.field;
+
+    return {
+      ...data,
+      id: doc.id,
+      field: Array.isArray(field)
+        ? field.flatMap((item) =>
+            typeof item === "string" && item.trim() ? [item.trim()] : []
+          )
+        : typeof field === "string" && field.trim()
+          ? [field.trim()]
+          : [],
+    };
+  });
 });
